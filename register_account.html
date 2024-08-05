@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Data Fetch Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Register Account</h1>
+    <script>
+        /*var json;
+        async function getData(){
+            const url="http://localhost:8000/register_age";
+            try{
+                const response = await fetch(url);
+                if(!response.ok){
+                    throw new Error (`Response status: ${response.status}`);
+                }
+                json = await response.json();
+                console.log(json);
+                return json;
+
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+        console.log("Hello");
+        getData();
+        const res = JSON.parse(json);
+        
+        console.log(res);
+        for(const key in res){
+            if(res.hasOwnProperty(key)){
+                console.log(`${key}:${res[key]}`)
+            }
+        }*/
+
+    </script>
+    <select id="ageDropdown">
+        <option value="">Select Age</option>
+    </select><br/><br/>
+
+    <select id="genderDropdown">
+        <option value="">Select Gender</option>
+    </select><br/><br/>
+    
+    <select id="statusDropdown">
+        <option value="">Select Status</option>
+    </select><br/><br/>
+    
+    <select id="levelDropdown">
+        <option value="">Select Level</option>
+    </select><br/><br/>
+
+    <select id="field_of_study_Dropdown">
+        <option value="">Select field of study</option>
+    </select><br/><br/>
+
+    <select id="province_Dropdown">
+        <option value="">Select province</option>
+    </select><br/><br/>
+
+    <button id="submitButton">Submit</button>
+
+    <script>
+        $(document).ready(function() {
+            // ดึงข้อมูลจาก register_age
+            $.ajax({
+                url: "http://localhost:8000/register_age",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var $dropdown = $('#ageDropdown');
+                    $.each(data, function(index, item) {
+                        $dropdown.append(
+                            $('<option></option>').val(item.age_id).text(item.age_name)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
+            // ดึงข้อมูลจาก register_gender
+            $.ajax({
+                url: "http://localhost:8000/register_gender",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var $dropdown = $('#genderDropdown');
+                    $.each(data, function(index, item) {
+                        $dropdown.append(
+                            $('<option></option>').val(item.gender_id).text(item.gender_name)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
+            // ดึงข้อมูลจาก register_status
+            $.ajax({
+                url: "http://localhost:8000/register_status",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var $dropdown = $('#statusDropdown');
+                    $.each(data, function(index, item) {
+                        $dropdown.append(
+                            $('<option></option>').val(item.status_id).text(item.status_name)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
+            // ดึงข้อมูลจาก register_level
+            $.ajax({
+                url: "http://localhost:8000/register_level",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var $dropdown = $('#levelDropdown');
+                    $.each(data, function(index, item) {
+                        $dropdown.append(
+                            $('<option></option>').val(item.level_id).text(item.level_name)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
+            // ดึงข้อมูลจาก register_field_of_study
+            $.ajax({
+                url: "http://localhost:8000/register_field_of_study",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var $dropdown = $('#field_of_study_Dropdown');
+                    $.each(data, function(index, item) {
+                        $dropdown.append(
+                            $('<option></option>').val(item.field_of_study_id).text(item.field_of_study_name)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
+            // ดึงข้อมูลจาก register_province
+            $.ajax({
+                url: "http://localhost:8000/register_province",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var $dropdown = $('#province_Dropdown');
+                    $.each(data, function(index, item) {
+                        $dropdown.append(
+                            $('<option></option>').val(item.id).text(item.province_name)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
+            // ฟังการคลิกปุ่ม Submit
+            $('#submitButton').click(function() {
+                // ดึงข้อมูลจาก form หรือ dropdown
+                var age_id = $('#ageDropdown').val();
+                var gender_id = $('#genderDropdown').val();
+                var status_id = $('#statusDropdown').val(); 
+                var level_id =  $('#levelDropdown').val(); 
+                var field_of_study_id = $('#field_of_study_Dropdown').val();
+                var province_id = $('#province_Dropdown').val(); 
+                //var registered_date = new Date().toISOString();
+
+                // ส่งข้อมูลไปยังไฟล์ PHP
+                $.ajax({
+                    url: 'register_account.php',
+                    method: 'POST',
+                    data: {
+                        age_id: age_id,
+                        gender_id:gender_id,
+                        status_id: status_id,
+                        level_id: level_id,
+                        field_of_study_id: field_of_study_id,
+                        province_id: province_id,
+                        //registered_date: registered_date
+                    },
+                    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error: ", status, error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
