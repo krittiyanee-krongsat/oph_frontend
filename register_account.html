@@ -49,11 +49,11 @@
         <option value="">Select Status</option>
     </select><br/><br/>
     
-    <select id="levelDropdown">
+    <select id="degreeDropdown">
         <option value="">Select Level</option>
     </select><br/><br/>
 
-    <select id="field_of_study_Dropdown">
+    <select id="field_study_Dropdown">
         <option value="">Select field of study</option>
     </select><br/><br/>
 
@@ -67,7 +67,7 @@
         $(document).ready(function() {
             // ดึงข้อมูลจาก register_age
             $.ajax({
-                url: "http://localhost:8000/register_age",
+                url: "http://localhost:5000/register_age",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -85,7 +85,7 @@
 
             // ดึงข้อมูลจาก register_gender
             $.ajax({
-                url: "http://localhost:8000/register_gender",
+                url: "http://localhost:5000/register_gender",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -103,7 +103,7 @@
 
             // ดึงข้อมูลจาก register_status
             $.ajax({
-                url: "http://localhost:8000/register_status",
+                url: "http://localhost:5000/register_status",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -121,14 +121,14 @@
 
             // ดึงข้อมูลจาก register_level
             $.ajax({
-                url: "http://localhost:8000/register_level",
+                url: "http://localhost:5000/register_degree",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    var $dropdown = $('#levelDropdown');
+                    var $dropdown = $('#degreeDropdown');
                     $.each(data, function(index, item) {
                         $dropdown.append(
-                            $('<option></option>').val(item.level_id).text(item.level_name)
+                            $('<option></option>').val(item.degree_id).text(item.degree_name)
                         );
                     });
                 },
@@ -139,14 +139,14 @@
 
             // ดึงข้อมูลจาก register_field_of_study
             $.ajax({
-                url: "http://localhost:8000/register_field_of_study",
+                url: "http://localhost:5000/register_field_study",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    var $dropdown = $('#field_of_study_Dropdown');
+                    var $dropdown = $('#field_study_Dropdown');
                     $.each(data, function(index, item) {
                         $dropdown.append(
-                            $('<option></option>').val(item.field_of_study_id).text(item.field_of_study_name)
+                            $('<option></option>').val(item.field_study_id).text(item.field_study_name)
                         );
                     });
                 },
@@ -157,14 +157,14 @@
 
             // ดึงข้อมูลจาก register_province
             $.ajax({
-                url: "http://localhost:8000/register_province",
+                url: "http://localhost:5000/register_province",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
                     var $dropdown = $('#province_Dropdown');
                     $.each(data, function(index, item) {
                         $dropdown.append(
-                            $('<option></option>').val(item.id).text(item.province_name)
+                            $('<option></option>').val(item.province_id).text(item.province_name)
                         );
                     });
                 },
@@ -179,21 +179,21 @@
                 var age_id = $('#ageDropdown').val();
                 var gender_id = $('#genderDropdown').val();
                 var status_id = $('#statusDropdown').val(); 
-                var level_id =  $('#levelDropdown').val(); 
-                var field_of_study_id = $('#field_of_study_Dropdown').val();
+                var degree_id =  $('#degreeDropdown').val(); 
+                var field_study_id = $('#field_study_Dropdown').val();
                 var province_id = $('#province_Dropdown').val(); 
                 //var registered_date = new Date().toISOString();
 
-                // ส่งข้อมูลไปยังไฟล์ PHP
+                
                 $.ajax({
-                    url: 'register_account.php',
+                    url: 'http://localhost:5000/register_user',
                     method: 'POST',
                     data: {
                         age_id: age_id,
                         gender_id:gender_id,
                         status_id: status_id,
-                        level_id: level_id,
-                        field_of_study_id: field_of_study_id,
+                        degree_id: degree_id,
+                        field_study_id: field_study_id,
                         province_id: province_id,
                         //registered_date: registered_date
                     },
