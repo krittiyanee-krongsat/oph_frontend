@@ -185,7 +185,7 @@
                 var province_id = $('#province_Dropdown').val(); 
                 //var registered_date = new Date().toISOString();
 
-                $.ajax({
+                    $.ajax({
                     url: 'http://localhost:5000/register_user',
                     method: 'POST',
                     dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
@@ -196,12 +196,11 @@
                         degree_id: degree_id,
                         field_study_name: field_study_name,
                         province_id: province_id,
-                        //registered_date: registered_date
-                    },
+                    }
                 }).always(function (response) {
                     console.log(response);
-                });
-
+                    alert('success');
+                })
                 return false;
                 });
             });
