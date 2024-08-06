@@ -10,6 +10,7 @@
     <h1>Register Account</h1>
     <script>
         /*var json;
+        
         async function getData(){
             const url="http://localhost:8000/register_age";
             try{
@@ -137,7 +138,7 @@
                 }
             });
 
-            // ดึงข้อมูลจาก register_field_of_study
+            // ดึงข้อมูลจาก register_field_study
             $.ajax({
                 url: "http://localhost:5000/register_field_study",
                 method: 'GET',
@@ -180,37 +181,30 @@
                 var gender_id = $('#genderDropdown').val();
                 var status_id = $('#statusDropdown').val(); 
                 var degree_id =  $('#degreeDropdown').val(); 
-                var field_study_id = $('#field_study_Dropdown').val();
+                var field_study_name = $('#field_study_Dropdown').val();
                 var province_id = $('#province_Dropdown').val(); 
                 //var registered_date = new Date().toISOString();
 
-                
                 $.ajax({
                     url: 'http://localhost:5000/register_user',
                     method: 'POST',
+                    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
                     data: {
                         age_id: age_id,
                         gender_id:gender_id,
                         status_id: status_id,
                         degree_id: degree_id,
-                        field_study_id: field_study_id,
+                        field_study_name: field_study_name,
                         province_id: province_id,
                         //registered_date: registered_date
                     },
-                    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
-                    success: function(response) {
-                        if (response.success) {
-                            alert(response.message);
-                        } else {
-                            alert(response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Error: ", status, error);
-                    }
+                }).always(function (response) {
+                    console.log(response);
+                });
+
+                return false;
                 });
             });
-        });
     </script>
 </body>
 </html>

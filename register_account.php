@@ -19,18 +19,18 @@
     $age_id = $_POST['age_id'];
     $gender_id = $_POST['gender_id'];
     $status_id = $_POST['status_id'];
-    $level_id = $_POST['level_id'];
-    $field_of_study_id = $_POST['field_of_study_id'];
+    $degree_id = $_POST['degree_id'];
+    $field_study_name = $_POST['field_study_name'];
     $province_id = $_POST['province_id'];
     //$registered_date = $_POST['registered_date'];
 
     // สร้างคำสั่ง SQL เพื่อเพิ่มข้อมูล
-    $sql = "INSERT INTO register_account (age_id, gender_id, status_id, level_id, field_of_study_id, province_id)
+    $sql = "INSERT INTO register_user (age_id,gender_id,status_id,degree_id,field_study_name,province_id)
     VALUES (?, ?, ?, ?, ?, ?)";
 
     // เตรียมคำสั่ง
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("iiiiis", $age_id, $gender_id, $status_id, $level_id, $field_of_study_id, $province_id);
+    $stmt->bind_param("iiiiis", $age_id, $gender_id, $status_id, $level_id, $field_study_name, $province_id);
 
     // ตรวจสอบการดำเนินการ
     if ($stmt->execute()) {
