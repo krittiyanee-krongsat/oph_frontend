@@ -58,6 +58,8 @@
         <option value="">Select field of study</option>
     </select><br/><br/>
 
+    <input type="text" id="field_study_input" placeholder="Enter field of study"><br/><br/>
+
     <select id="province_Dropdown">
         <option value="">Select province</option>
     </select><br/><br/>
@@ -181,8 +183,12 @@
                 var gender_id = $('#genderDropdown').val();
                 var status_id = $('#statusDropdown').val(); 
                 var degree_id =  $('#degreeDropdown').val(); 
-                var field_study_name = $('#field_study_Dropdown').val();
-                var province_id = $('#province_Dropdown').val(); 
+                // ตรวจสอบว่า field_study_input มีค่าหรือไม่
+                var field_study_name = $('#field_study_input').val().trim();
+                if (field_study_name === "") {
+                    field_study_name = $('#field_study_Dropdown').val();
+                }
+                var province_id = $('#province_Dropdown').val();
                 //var registered_date = new Date().toISOString();
 
                     $.ajax({
