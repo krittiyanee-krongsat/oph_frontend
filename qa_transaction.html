@@ -7,6 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    
     <label id="question_1_student"></label><br/><br/>
     
     <select id="ansDropdown_1">
@@ -23,10 +24,11 @@
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
-                    var $dropdown = $('#question_1_student');
+                    var $label = $('#question_1_student');
                     $.each(data, function(index, item) {
-                        $dropdown.append(
-                            $('<label></label>').val(item.qa_id).text(item.q_student)
+                        $label.append(
+                            $('<span></span>').attr('data-qa-id', item.qa_id).text(item.q_student) 
+                            //ใช้ attr('data-qa-id', item.qa_id) เพื่อเก็บ qa_id ใน <span> และดึงค่าจาก span ด้วย attr('data-qa-id')
                         );
                     });
                 },
@@ -56,9 +58,11 @@
             // ฟังการคลิกปุ่ม Submit
             $('#submitButton').click(function() {
                 // ดึงข้อมูลจาก form หรือ dropdown
-                var qa_id = $('#question_1_student').val();
+                var qa_id = $('#question_1_student span').attr('data-qa-id');
                 var ans_id = $('#ansDropdown_1').val();
                 //var registered_date = new Date().toISOString();
+
+                console.log(qa_id)
                     $.ajax({
                     url: 'http://localhost:5000/qa_transaction',
                     method: 'POST',
@@ -74,8 +78,6 @@
                 return false;
             });
     </script>
-
-   
 
 </body>
 </html>
