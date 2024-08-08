@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <label id="question_1_student"></label><br/><br/>
+    
+    <select id="ansDropdown_1">
+        <option value="">Select Answer</option>
+    </select><br/><br/>
+
+    <button id="submitButton">Submit</button>
+
+    <script>
+        $(document).ready(function() {
+            // ดึงข้อมูลจาก register_age
+            $.ajax({
+                url: "http://localhost:5000/qa_question/qa_1/student",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var $dropdown = $('#question_1_student');
+                    $.each(data, function(index, item) {
+                        $dropdown.append(
+                            $('<label></label>').val(item.qa_id).text(item.q_student)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
+            $.ajax({
+                url: "http://localhost:5000/qa_answers/ans_1",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var $dropdown = $('#ansDropdown_1');
+                    $.each(data, function(index, item) {
+                        $dropdown.append(
+                            $('<option></option>').val(item.ans_id).text(item.answer)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+        }); 
+            
+            // ฟังการคลิกปุ่ม Submit
+            $('#submitButton').click(function() {
+                // ดึงข้อมูลจาก form หรือ dropdown
+                var qa_id = $('#question_1_student').val();
+                var ans_id = $('#ansDropdown_1').val();
+                //var registered_date = new Date().toISOString();
+                    $.ajax({
+                    url: 'http://localhost:5000/qa_transaction',
+                    method: 'POST',
+                    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
+                    data: {
+                        qa_id:qa_id,
+                        ans_id:ans_id,
+                    }
+                }).always(function (response) {
+                    console.log(response);
+                    alert('success');
+                })
+                return false;
+            });
+    </script>
+
+   
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AJAX Data Fetch Example</title>
+    <title>Register Account</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -103,7 +103,7 @@
                     console.error("AJAX Error: ", status, error);
                 }
             });
-
+            
             // ดึงข้อมูลจาก register_status
             $.ajax({
                 url: "http://localhost:5000/register_status",
@@ -121,7 +121,7 @@
                     console.error("AJAX Error: ", status, error);
                 }
             });
-
+            
             // ดึงข้อมูลจาก register_level
             $.ajax({
                 url: "http://localhost:5000/register_degree",
@@ -139,7 +139,7 @@
                     console.error("AJAX Error: ", status, error);
                 }
             });
-
+            
             // ดึงข้อมูลจาก register_field_study
             $.ajax({
                 url: "http://localhost:5000/register_field_study",
@@ -157,7 +157,7 @@
                     console.error("AJAX Error: ", status, error);
                 }
             });
-
+            
             // ดึงข้อมูลจาก register_province
             $.ajax({
                 url: "http://localhost:5000/register_province",
@@ -175,7 +175,7 @@
                     console.error("AJAX Error: ", status, error);
                 }
             });
-
+            
             // ฟังการคลิกปุ่ม Submit
             $('#submitButton').click(function() {
                 // ดึงข้อมูลจาก form หรือ dropdown
@@ -183,14 +183,14 @@
                 var gender_id = $('#genderDropdown').val();
                 var status_id = $('#statusDropdown').val(); 
                 var degree_id =  $('#degreeDropdown').val(); 
-                // ตรวจสอบว่า field_study_input มีค่าหรือไม่
-                var field_study_name = $('#field_study_input').val().trim();
-                if (field_study_name === "") {
-                    field_study_name = $('#field_study_Dropdown').val();
-                }
+               // ตรวจสอบว่า field_study_input มีค่าหรือไม่
+               var field_study_name = $('#field_study_input').val().trim();
+               if (field_study_name === "") {
+                   field_study_name = $('#field_study_Dropdown').val();
+               }
                 var province_id = $('#province_Dropdown').val();
                 //var registered_date = new Date().toISOString();
-
+               console.log(field_study_name);
                     $.ajax({
                     url: 'http://localhost:5000/register_user',
                     method: 'POST',
