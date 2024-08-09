@@ -17,35 +17,47 @@
     <button id="submitButton">Submit</button>
 
     <script>
-        $(document).ready(function() {
-            // ดึงข้อมูลจาก register_age
-            $.ajax({
-                url: "http://localhost:5000/qa_question/qa_1/student",
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var $label = $('#question_1_student');
-                    $.each(data, function(index, item) {
-                        $label.append(
-                            $('<span></span>').attr('data-qa-id', item.qa_id).text(item.q_student) 
-                            //ใช้ attr('data-qa-id', item.qa_id) เพื่อเก็บ qa_id ใน <span> และดึงค่าจาก span ด้วย attr('data-qa-id')
-                        );
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                }
-            });
+       $(document).ready(function() {
+        // ส่งคำขอ AJAX เพื่อดึงข้อมูลจากฐานข้อมูล
+        $.ajax({
+            url: "http://localhost:5000/qa_question/1",
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
 
-            $.ajax({
-                url: "http://localhost:5000/qa_answers/ans_1",
+            // ประกาศคำถามดึงข้อมูลจาก api
+            var questionStudent = data.question_list[0].q_student;
+            var questionParent = data.question_list[0].q_parent;
+            
+            $('#question_1_student').text(questionStudent);
+            $('#question_1_parent').text(questionParent);
+
+            $.each(questionStudent,questionParent, function(index, questionItem) {
+                        $.append(
+                            $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_student) 
+                        );
+                    })
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error: ", status, error);
+            }
+        });
+
+        $.ajax({
+                url: "http://localhost:5000/qa_question/1",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
+
+                    //ดึงข้อมูลคำถาม
+                    var answer = data.answers_list[0];
+
+                    //แสดงคำถามใน HTML
                     var $dropdown = $('#ansDropdown_1');
-                    $.each(data, function(index, item) {
+
+                    $.each(answer, function(index, answerItem) {
                         $dropdown.append(
-                            $('<option></option>').val(item.ans_id).text(item.answer)
+                            $('<option></option>').val(answerItem.answer).text(answerItem.answer)
                         );
                     });
                 },
@@ -53,16 +65,17 @@
                     console.error("AJAX Error: ", status, error);
                 }
             });
-        }); 
             
+        }); 
             // ฟังการคลิกปุ่ม Submit
             $('#submitButton').click(function() {
                 // ดึงข้อมูลจาก form หรือ dropdown
                 var qa_id = $('#question_1_student span').attr('data-qa-id');
                 var ans_id = $('#ansDropdown_1').val();
-                //var registered_date = new Date().toISOString();
 
                 console.log(qa_id)
+                console.log(ans_id)
+                
                     $.ajax({
                     url: 'http://localhost:5000/qa_transaction',
                     method: 'POST',
