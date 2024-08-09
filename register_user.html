@@ -38,6 +38,9 @@
         }*/
 
     </script>
+
+    <input type="text" id="emailUser" placeholder="Enter email"><br/><br/>
+
     <select id="ageDropdown">
         <option value="">Select Age</option>
     </select><br/><br/>
@@ -68,6 +71,25 @@
 
     <script>
         $(document).ready(function() {
+
+            // ดึงข้อมูลจาก email
+            $.ajax({
+                url: "http://localhost:5000/register_email",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var $dropdown = $('#emailUser');
+                    $.each(data, function(index, item) {
+                        $dropdown.append(
+                            $('<option></option>').val(item.email_id).text(item.email_id)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
             // ดึงข้อมูลจาก register_age
             $.ajax({
                 url: "http://localhost:5000/register_age",
@@ -179,6 +201,7 @@
             // ฟังการคลิกปุ่ม Submit
             $('#submitButton').click(function() {
                 // ดึงข้อมูลจาก form หรือ dropdown
+                var email_name = $('#emailUser').val().trim();
                 var age_id = $('#ageDropdown').val();
                 var gender_id = $('#genderDropdown').val();
                 var status_id = $('#statusDropdown').val(); 
@@ -190,12 +213,13 @@
                }
                 var province_id = $('#province_Dropdown').val();
                 //var registered_date = new Date().toISOString();
-               console.log(field_study_name);
+               console.log(email_name);
                     $.ajax({
                     url: 'http://localhost:5000/register_user',
                     method: 'POST',
                     dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
                     data: {
+                        email_name:email_name,
                         age_id: age_id,
                         gender_id:gender_id,
                         status_id: status_id,
