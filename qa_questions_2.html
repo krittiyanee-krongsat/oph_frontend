@@ -23,13 +23,10 @@
                 dataType: 'json',
                 success: function(data) {
                     var question_list = data.question_list;
-                    //var answer_list = data.answers_list;
 
                     var $questionStudent = $('#question_2_student');
                     var $questionParent = $('#question_2_parent');
-                    //var $dropdown = $('#ansDropdown_2');
 
-                    // Populate questions
                     $.each(question_list, function(index, questionItem) {
                         $questionStudent.append(
                             $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_student)
@@ -48,7 +45,6 @@
                 success: function(data) {
                     var answers_list = data.answers_list[0];
 
-                    // Display answers in the dropdown
                     var $dropdown = $('#ansDropdown_2');
 
                     $.each(answers_list, function(index, answerItem) {
