@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA_4</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <label id="question_4_student"></label><br/><br/>
+    <label id="question_4_parent"></label><br/><br/>
+    <select id="ansDropdown_4">
+        <option value="">Select Answer</option>
+    </select><br/><br/>
+    <button id="submitButton">Submit</button>
+
+    <script>
+        $(document).ready(function() {
+            // Send AJAX request to fetch questions and answers
+            $.ajax({
+                url: "http://localhost:5000/qa_question/4",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var question_list = data.question_list;
+
+                    var $questionStudent = $('#question_4_student');
+                    var $questionParent = $('#question_4_parent');
+
+                    $.each(question_list, function(index, questionItem) {
+                        $questionStudent.append(
+                            $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_student)
+                        );
+                        $questionParent.append(
+                            $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_parent)
+                        );
+                    });
+                }
+            });
+
+            $.ajax({
+                url: "http://localhost:5000/qa_question/4",
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    var answers_list = data.answers_list[0];
+
+                    var $dropdown = $('#ansDropdown_4');
+
+                    $.each(answers_list, function(index, answerItem) {
+                        $dropdown.append(
+                            $('<option></option>').val(answerItem.ans_id).text(answerItem.answer)
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+        });
+
+        // Event listener for Submit button
+        $('#submitButton').click(function() {
+            var qa_id = $('#question_4_student span').attr('data-qa-id');
+            var ans_id = $('#ansDropdown_4').val();
+
+            console.log(qa_id);
+            console.log(ans_id);
+
+            $.ajax({
+                url: 'http://localhost:5000/qa_transaction',
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    qa_id: qa_id,
+                    ans_id: ans_id,
+                },
+                success: function(response) {
+                    console.log(response);
+                    alert('Success');
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                }
+            });
+
+            return false;
+        });
+    </script>
+</body>
+</html>
