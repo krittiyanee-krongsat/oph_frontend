@@ -9,6 +9,8 @@
 <body>
     
     <label id="question_1_student"></label><br/><br/>
+
+    <label id="question_1_parent"></label><br/><br/>
     
     <select id="ansDropdown_1">
         <option value="">Select Answer</option>
@@ -24,18 +26,20 @@
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-
-            // ประกาศคำถามดึงข้อมูลจาก api
-            var questionStudent = data.question_list[0].q_student;
-            var questionParent = data.question_list[0].q_parent;
             
-            $('#question_1_student').text(questionStudent);
-            $('#question_1_parent').text(questionParent);
+            var question_list = data.question_list;
 
-            $.each(questionStudent,questionParent, function(index, questionItem) {
-                        $.append(
-                            $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_student) 
+            var $questionStudent = $('#question_1_student');
+            var $questionParent = $('#question_1_parent');
+
+            $.each(question_list, function(index, questionItem) {
+                        $questionStudent.append(
+                            $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_student)
                         );
+
+                        $questionParent.append(
+                                $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_parent)
+                        )
                     })
             },
             error: function(xhr, status, error) {
@@ -49,15 +53,15 @@
                 dataType: 'json',
                 success: function(data) {
 
-                    //ดึงข้อมูลคำถาม
+                    //ดึงข้อมูลคำตอบแบบ array
                     var answer = data.answers_list[0];
 
-                    //แสดงคำถามใน HTML
+                    //แสดงคำตอบใน HTML
                     var $dropdown = $('#ansDropdown_1');
 
                     $.each(answer, function(index, answerItem) {
                         $dropdown.append(
-                            $('<option></option>').val(answerItem.answer).text(answerItem.answer)
+                            $('<option></option>').val(answerItem.ans_id).text(answerItem.answer)
                         );
                     });
                 },
