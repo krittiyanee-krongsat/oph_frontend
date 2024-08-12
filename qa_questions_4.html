@@ -29,10 +29,10 @@
 
                     $.each(question_list, function(index, questionItem) {
                         $questionStudent.append(
-                            $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_student)
+                            $('<span></span>').val(questionItem.qa_id).text(questionItem.q_student)
                         );
                         $questionParent.append(
-                            $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_parent)
+                            $('<span></span>').val(questionItem.qa_id).text(questionItem.q_parent)
                         );
                     });
                 }
@@ -61,7 +61,7 @@
 
         // Event listener for Submit button
         $('#submitButton').click(function() {
-            var qa_id = $('#question_4_student span').attr('data-qa-id');
+            var qa_id = $('#question_4_student span').val();
             var ans_id = $('#ansDropdown_4').val();
 
             console.log(qa_id);

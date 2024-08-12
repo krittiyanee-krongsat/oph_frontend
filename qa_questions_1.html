@@ -35,11 +35,11 @@
 
             $.each(question_list, function(index, questionItem) {
                         $questionStudent.append(
-                            $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_student)
+                            $('<span></span>').val(questionItem.qa_id).text(questionItem.q_student)
                         );
 
                         $questionParent.append(
-                                $('<span></span>').attr('data-qa-id', questionItem.qa_id).text(questionItem.q_parent)
+                                $('<span></span>').val(questionItem.qa_id).text(questionItem.q_parent)
                         )
                     })
             },
@@ -75,7 +75,7 @@
             // ฟังการคลิกปุ่ม Submit
             $('#submitButton').click(function() {
                 // ดึงข้อมูลจาก form หรือ dropdown
-                var qa_id = $('#question_1_student span').attr('data-qa-id');
+                var qa_id = $('#question_1_student span').val();
                 var ans_id = $('#ansDropdown_1').val();
 
                 console.log(qa_id)
