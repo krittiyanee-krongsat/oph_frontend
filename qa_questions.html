@@ -20,6 +20,7 @@
         
        $(document).ready(function() {
         
+        // ประกาศค่าให้กำหนดเลือกคำตอบแค่ 0 ถึง 3
         var selectionCount = 0;
         var maxSelections = 3;
         
@@ -55,26 +56,26 @@
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                // Get answer array
+                // รับค่า answer array
                 var answers = data.answers_list[0];
     
-                // Display answers in HTML
+                // แสดงผล answer ใน html
                 var $dropdown = $('#ansDropdown_1');
-    
+                
+                // ประกาศค่าฟังก์ชัน label กับ input
                 $.each(answers, function(index, answerItem) {
                     var $label = $('<label></label>');
                     var $input = $('<input type="radio">').val(answerItem.ans_id);
-    
+                    
+                    
                     $input.on('change', function() {
                         if ($(this).is(':checked')) {
-                            if (selectionCount < maxSelections) {
+                            if (selectionCount < maxSelections) { //เช็คเงื่อนไขว่าให้เลือกได้แค่ 3 คำตอบ
                                 selectionCount++;
-                            } else {
+                            } else { //ถ้าเกิน 3 คำตอบจะให้ขึ้นว่าคุณสามารถเลือกได้สูงสุดสามตัวเลือกเท่านั้น
                                 alert("คุณสามารถเลือกได้สูงสุดสามตัวเลือกเท่านั้น");
-                                $(this).prop('checked', false);
+                                $(this).prop('checked', false); // ยกเลิกการเลือกถ้าจำนวนที่เลือกเกิน
                             }
-                        } else {
-                            selectionCount--;
                         }
                     });
     
