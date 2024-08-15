@@ -8,11 +8,11 @@
 </head>
 <body>
     
-    <label id="question_1_student"></label><br/><br/>
+    <label id="question_2_student"></label><br/><br/>
 
-    <label id="question_1_parent"></label><br/><br/>
+    <label id="question_2_parent"></label><br/><br/>
     
-    <div id="ansDropdown_1" value="1"></div><br/><br/>
+    <div id="ansDropdown_2"></div><br/><br/>
 
     <button id="submitButton">Submit</button>
 
@@ -22,19 +22,19 @@
         
         // ประกาศค่าให้กำหนดเลือกคำตอบแค่ 0 ถึง 3
         var selectionCount = 0;
-        var maxSelections = 3;
+        var maxSelections = 1;
         
         // ส่งคำขอ AJAX เพื่อดึงข้อมูลจากฐานข้อมูล
         $.ajax({
-            url: "http://localhost:5000/qa_question/1",
+            url: "http://localhost:5000/qa_question/2",
             method: 'GET',
             dataType: 'json',
             success: function(data) {
             
             var question_list = data.question_list;
 
-            var $questionStudent = $('#question_1_student');
-            var $questionParent = $('#question_1_parent');
+            var $questionStudent = $('#question_2_student');
+            var $questionParent = $('#question_2_parent');
 
             $.each(question_list, function(index, questionItem) {
                         $questionStudent.append(
@@ -52,7 +52,7 @@
         });
 
         $.ajax({
-            url: "http://localhost:5000/qa_question/1",
+            url: "http://localhost:5000/qa_question/2",
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -60,9 +60,11 @@
                 var answers = data.answers_list[0];
     
                 // แสดงผล answer ใน html
-                var $dropdown = $('#ansDropdown_1');
+                var $dropdown = $('#ansDropdown_2');
                 
+                // ใช้ฟังก์ชัน $.each ของ jQuery เพื่อวนลูปผ่านอาร์เรย์ answers
                 // ประกาศค่าฟังก์ชัน label กับ input
+                // index คือดัชนีของแต่ละรายการในอาร์เรย์ answerItem คือค่าของแต่ละรายการในอาร์เรย์
                 $.each(answers, function(index, answerItem) {
                     var $label = $('<label></label>');
                     var $input = $('<input type="radio">').val(answerItem.ans_id);
@@ -92,7 +94,7 @@
             // ฟังการคลิกปุ่ม Submit
             $('#submitButton').click(function() {
                 // ดึงข้อมูลจาก form หรือ dropdown
-                var qa_id = $('#question_1_student span').val();
+                var qa_id = $('#question_2_student span').val();
                 var ans_id = [];
                 $('input[type="radio"]:checked').each(function() {
                     ans_id.push($(this).val());
