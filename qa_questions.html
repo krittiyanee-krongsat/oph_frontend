@@ -12,15 +12,17 @@
 
     <label id="question_1_parent"></label><br/><br/>
     
-    <select id="ansDropdown_1">
-        <option value="">Select Answer</option>
-    </select><br/><br/>
+    <div id="ansDropdown_1" value="1"></div><br/><br/>
 
     <button id="submitButton">Submit</button>
 
     <script>
         
        $(document).ready(function() {
+        
+        var selectionCount = 0;
+        var maxSelections = 3;
+        
         // ส่งคำขอ AJAX เพื่อดึงข้อมูลจากฐานข้อมูล
         $.ajax({
             url: "http://localhost:5000/qa_question/1",
@@ -49,34 +51,51 @@
         });
 
         $.ajax({
-                url: "http://localhost:5000/qa_question/1",
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-
-                    //ดึงข้อมูลคำตอบแบบ array
-                    var answer = data.answers_list[0];
-
-                    //แสดงคำตอบใน HTML
-                    var $dropdown = $('#ansDropdown_1');
-
-                    $.each(answer, function(index, answerItem) {
-                        $dropdown.append(
-                            $('<option></option>').val(answerItem.ans_id).text(answerItem.answer)
-                        );
+            url: "http://localhost:5000/qa_question/1",
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Get answer array
+                var answers = data.answers_list[0];
+    
+                // Display answers in HTML
+                var $dropdown = $('#ansDropdown_1');
+    
+                $.each(answers, function(index, answerItem) {
+                    var $label = $('<label></label>');
+                    var $input = $('<input type="radio">').val(answerItem.ans_id);
+    
+                    $input.on('change', function() {
+                        if ($(this).is(':checked')) {
+                            if (selectionCount < maxSelections) {
+                                selectionCount++;
+                            } else {
+                                alert("คุณสามารถเลือกได้สูงสุดสามตัวเลือกเท่านั้น");
+                                $(this).prop('checked', false);
+                            }
+                        } else {
+                            selectionCount--;
+                        }
                     });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                }
-            });
+    
+                    $label.append($input).append(answerItem.answer);
+                    $dropdown.append($label).append('<br>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error: ", status, error);
+            }
+        });
             
         }); 
             // ฟังการคลิกปุ่ม Submit
             $('#submitButton').click(function() {
                 // ดึงข้อมูลจาก form หรือ dropdown
                 var qa_id = $('#question_1_student span').val();
-                var ans_id = $('#ansDropdown_1').val();
+                var ans_id = [];
+                $('input[type="radio"]:checked').each(function() {
+                    ans_id.push($(this).val());
+                });
 
                 console.log(qa_id)
                 console.log(ans_id)
@@ -87,7 +106,8 @@
                     dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
                     data: {
                         qa_id:qa_id,
-                        ans_id:ans_id,
+                        ans_id: ans_id.join(','),
+
                     }
                 }).always(function (response) {
                     console.log(response);
