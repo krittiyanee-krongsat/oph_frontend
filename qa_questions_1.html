@@ -20,9 +20,10 @@
         
        $(document).ready(function() {
         
-        // ประกาศค่าให้กำหนดเลือกคำตอบแค่ 0 ถึง 3
+        // ประกาศค่าให้กำหนดเลือกคำตอบแค่ 0 ถึง 1
         var selectionCount = 0;
         var maxSelections = 3;
+        var selectedAnswers = []; // ใช้ array นี้เพื่อเก็บคำตอบที่เลือกและลำดับของมัน
         
         // ส่งคำขอ AJAX เพื่อดึงข้อมูลจากฐานข้อมูล
         $.ajax({
@@ -58,7 +59,6 @@
             success: function(data) {
                 // รับค่า answer array
                 var answers = data.answers_list[0];
-    
                 // แสดงผล answer ใน html
                 var $dropdown = $('#ansDropdown_1');
                 
@@ -69,14 +69,23 @@
                     var $label = $('<label></label>');
                     var $input = $('<input type="radio">').val(answerItem.ans_id);
                     
-                    
                     $input.on('change', function() {
+                        var value = $(this).val();
+                        
                         if ($(this).is(':checked')) {
-                            if (selectionCount < maxSelections) { //เช็คเงื่อนไขว่าให้เลือกได้แค่ 3 คำตอบ
+                            if (selectionCount < maxSelections) { //เช็คเงื่อนไขว่าให้เลือกได้แค่ 1 คำตอบ
+                                selectedAnswers.push(value);
                                 selectionCount++;
-                            } else { //ถ้าเกิน 3 คำตอบจะให้ขึ้นว่าคุณสามารถเลือกได้สูงสุดสามตัวเลือกเท่านั้น
+                            } else { //ถ้าเกิน 1 คำตอบจะให้ขึ้นว่าคุณสามารถเลือกได้สูงสุดหนึ่งตัวเลือกเท่านั้น
                                 alert("คุณสามารถเลือกได้สูงสุดสามตัวเลือกเท่านั้น");
                                 $(this).prop('checked', false); // ยกเลิกการเลือกถ้าจำนวนที่เลือกเกิน
+                                return;
+                            }
+                        } else {
+                            var index = selectedAnswers.indexOf(value);
+                            if (index > -1) {
+                                selectedAnswers.splice(index, 1);
+                                selectionCount--;
                             }
                         }
                     });
@@ -89,36 +98,29 @@
                 console.error("AJAX Error: ", status, error);
             }
         });
+        
+        // ฟังการคลิกปุ่ม Submit
+        $('#submitButton').click(function() {
+            // ดึงข้อมูลจาก form หรือ dropdown
+            var qa_id = $('#question_1_student span').val();
             
-        }); 
-            // ฟังการคลิกปุ่ม Submit
-            $('#submitButton').click(function() {
-                // ดึงข้อมูลจาก form หรือ dropdown
-                var qa_id = $('#question_1_student span').val();
-                var ans_id = [];
-                $('input[type="radio"]:checked').each(function() {
-                    ans_id.push($(this).val());
-                });
-
-                console.log(qa_id)
-                console.log(ans_id)
-                
-                    $.ajax({
-                    url: 'http://localhost:5000/qa_transaction',
-                    method: 'POST',
-                    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
-                    data: {
-                        qa_id:qa_id,
-                        ans_id: ans_id.join(','),
-
-                    }
-                }).always(function (response) {
-                    console.log(response);
-                    alert('success');
-                })
-                return false;
+            $.ajax({
+                url: 'http://localhost:5000/qa_transaction',
+                method: 'POST',
+                dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
+                data: {
+                    qa_id: qa_id,
+                    ans_id: selectedAnswers.join('')
+                }
+            }).always(function (response) {
+                console.log(response);
+                alert('Success');
             });
+            
+            return false;
+        });
 
+    }); 
     </script>
 
 </body>
