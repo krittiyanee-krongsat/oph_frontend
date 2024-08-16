@@ -82,9 +82,13 @@
                                 return;
                             }
                         } else {
+                            //ค้นหาตำแหน่งของ value ในอาร์เรย์ selectedAnswers และเก็บตำแหน่งนั้นไว้ในตัวแปร index
                             var index = selectedAnswers.indexOf(value);
+                            //ตรวจสอบว่า value นั้นมีอยู่ใน selectedAnswers หรือไม่ (ถ้า index มากกว่า -1 แสดงว่ามีอยู่)
                             if (index > -1) {
+                                //ถ้ามีอยู่ใน selectedAnswers จะลบ value นั้นออกจากอาร์เรย์โดยใช้ splice ซึ่งจะลบออก 1 ค่า ที่ตำแหน่ง index
                                 selectedAnswers.splice(index, 1);
+                                //ลดค่าตัวแปร selectionCount ลง 1 เพื่อแสดงจำนวนคำตอบที่ถูกเลือกที่ลดลง
                                 selectionCount--;
                             }
                         }
