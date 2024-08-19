@@ -8,11 +8,9 @@
 </head>
 <body>
     
-    <label id="question_1_student"></label><br/><br/>
-
-    <label id="question_1_parent"></label><br/><br/>
+    <div id="questions"></div><br/><br/>
     
-    <div id="ansDropdown_1"></div><br/><br/>
+    <div id="ansDropdown_1"></div>
 
     <button id="submitButton">Submit</button>
 
@@ -22,86 +20,98 @@
         
         // ประกาศค่าให้กำหนดเลือกคำตอบแค่ 0 ถึง 1
         var selectionCount = 0;
-        var maxSelections = 3;
+        var maxSelections = 9;
         var selectedAnswers = []; // ใช้ array นี้เพื่อเก็บคำตอบที่เลือกและลำดับของมัน
         
         // ส่งคำขอ AJAX เพื่อดึงข้อมูลจากฐานข้อมูล
+        for(let id=1; id <= 5; id++){
         $.ajax({
-            url: "http://localhost:5000/qa_question/1",
+            url: "http://localhost:5000/qa_question/"+id,
             method: 'GET',
             dataType: 'json',
             success: function(data) {
             
             var question_list = data.question_list;
+            var answers = data.answers_list[0];
+            //var $questionStudent = $('#question_'+id+'_student');
+            //var $questionParent = $('#question_'+id+'_parent');
 
-            var $questionStudent = $('#question_1_student');
-            var $questionParent = $('#question_1_parent');
+            //var $questions = document.createElement("div");
+            //var $dropdown = document.createElement("div");
+            
+            var $questions = $('<div></div>')
+            var $dropdown = $('<div></div>')     
 
             $.each(question_list, function(index, questionItem) {
-                        $questionStudent.append(
+                        $questions.append(
                             $('<span></span>').val(questionItem.qa_id).text(questionItem.q_student)
                         );
 
-                        $questionParent.append(
-                                $('<span></span>').val(questionItem.qa_id).text(questionItem.q_parent)
-                        )
+                        $.each(answers, function(index, answerItem) {
+                            var $label = $('<label></label>');
+                            var $input = $('<input type="radio">').val(answerItem.ans_id);
+                            
+                            $input.on('change', function() {
+                                var value = $(this).val();
+                                
+                                if ($(this).is(':checked')) {
+                                    if (selectionCount < maxSelections) { //เช็คเงื่อนไขว่าให้เลือกได้แค่ 1 คำตอบ
+                                        selectedAnswers.push(value);
+                                        selectionCount++;
+                                    } else { //ถ้าเกิน 1 คำตอบจะให้ขึ้นว่าคุณสามารถเลือกได้สูงสุดหนึ่งตัวเลือกเท่านั้น
+                                        alert("คุณสามารถเลือกได้สูงสุดสามตัวเลือกเท่านั้น");
+                                        $(this).prop('checked', false); // ยกเลิกการเลือกถ้าจำนวนที่เลือกเกิน
+                                        return;
+                                    }
+                                } else {
+                                    //ค้นหาตำแหน่งของ value ในอาร์เรย์ selectedAnswers และเก็บตำแหน่งนั้นไว้ในตัวแปร index
+                                    var index = selectedAnswers.indexOf(value);
+                                    //ตรวจสอบว่า value นั้นมีอยู่ใน selectedAnswers หรือไม่ (ถ้า index มากกว่า -1 แสดงว่ามีอยู่)
+                                    if (index > -1) {
+                                        //ถ้ามีอยู่ใน selectedAnswers จะลบ value นั้นออกจากอาร์เรย์โดยใช้ splice ซึ่งจะลบออก 1 ค่า ที่ตำแหน่ง index
+                                        selectedAnswers.splice(index, 1);
+                                        //ลดค่าตัวแปร selectionCount ลง 1 เพื่อแสดงจำนวนคำตอบที่ถูกเลือกที่ลดลง
+                                        selectionCount--;
+                                    }
+                                }
+                            });
+            
+                            $label.append($input).append(answerItem.answer);
+                            $dropdown.append($label).append('<br>');
+                        });
+                    
                     })
+
+                    $('#questions').append($questions.append($dropdown));
+                    //document.getElementById("questions").innerHTML= $questions;
+                    //document.getElementById("questions").append($dropdown);
+                    
             },
             error: function(xhr, status, error) {
                 console.error("AJAX Error: ", status, error);
             }
         });
+    }
 
-        $.ajax({
+        /*$.ajax({
             url: "http://localhost:5000/qa_question/1",
             method: 'GET',
             dataType: 'json',
             success: function(data) {
                 // รับค่า answer array
-                var answers = data.answers_list[0];
+                
                 // แสดงผล answer ใน html
-                var $dropdown = $('#ansDropdown_1');
+                
                 
                 // ใช้ฟังก์ชัน $.each ของ jQuery เพื่อวนลูปผ่านอาร์เรย์ answers
                 // ประกาศค่าฟังก์ชัน label กับ input
                 // index คือดัชนีของแต่ละรายการในอาร์เรย์ answerItem คือค่าของแต่ละรายการในอาร์เรย์
-                $.each(answers, function(index, answerItem) {
-                    var $label = $('<label></label>');
-                    var $input = $('<input type="radio">').val(answerItem.ans_id);
-                    
-                    $input.on('change', function() {
-                        var value = $(this).val();
-                        
-                        if ($(this).is(':checked')) {
-                            if (selectionCount < maxSelections) { //เช็คเงื่อนไขว่าให้เลือกได้แค่ 1 คำตอบ
-                                selectedAnswers.push(value);
-                                selectionCount++;
-                            } else { //ถ้าเกิน 1 คำตอบจะให้ขึ้นว่าคุณสามารถเลือกได้สูงสุดหนึ่งตัวเลือกเท่านั้น
-                                alert("คุณสามารถเลือกได้สูงสุดสามตัวเลือกเท่านั้น");
-                                $(this).prop('checked', false); // ยกเลิกการเลือกถ้าจำนวนที่เลือกเกิน
-                                return;
-                            }
-                        } else {
-                            //ค้นหาตำแหน่งของ value ในอาร์เรย์ selectedAnswers และเก็บตำแหน่งนั้นไว้ในตัวแปร index
-                            var index = selectedAnswers.indexOf(value);
-                            //ตรวจสอบว่า value นั้นมีอยู่ใน selectedAnswers หรือไม่ (ถ้า index มากกว่า -1 แสดงว่ามีอยู่)
-                            if (index > -1) {
-                                //ถ้ามีอยู่ใน selectedAnswers จะลบ value นั้นออกจากอาร์เรย์โดยใช้ splice ซึ่งจะลบออก 1 ค่า ที่ตำแหน่ง index
-                                selectedAnswers.splice(index, 1);
-                                //ลดค่าตัวแปร selectionCount ลง 1 เพื่อแสดงจำนวนคำตอบที่ถูกเลือกที่ลดลง
-                                selectionCount--;
-                            }
-                        }
-                    });
-    
-                    $label.append($input).append(answerItem.answer);
-                    $dropdown.append($label).append('<br>');
-                });
+                
             },
             error: function(xhr, status, error) {
                 console.error("AJAX Error: ", status, error);
             }
-        });
+        });*/
         
         // ฟังการคลิกปุ่ม Submit
         $('#submitButton').click(function() {
