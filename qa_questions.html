@@ -4,8 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QA</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <label id="questions">
+
+    <div id="questions"></div><br/>
+
+    <button id="submitButton">Submit</button>
+
+    <script>
+        $(document).ready(function() {
+
+            var selectionCount = 0;
+            var maxSelections = 9;
+            var selectedAnswers = [];
+
+            // ส่งคำขอ AJAX เพื่อดึงข้อมูลจากฐานข้อมูล
+            for(let id=1; id <= 5; id++){
+                $.ajax({
+                    url: "http://localhost:5000/qa_question/"+id,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        var question_list = data.question_list;
+                        var answers = data.answers_list[0];
+                        
+                        var $questions = $("<div></div>")
+                        var $dropdown = $("<div></div>")
+        
+                        $.each(question_list, function(index, questionItem) {
+                            $questions.append(
+                                $('<span></span>').val(questionItem.qa_id).text(questionItem.q_student)
+                            );
+        
+                            $.each(answers, function(index, answerItem) {
+                                var $label = $('<label></label>');
+                                var $input = $('<input type="radio" name="answer">').val(answerItem.ans_id);
+
+                                $label.append($input).append(answerItem.answer);
+                                $dropdown.append($label).append('<br>');
+                            });
+                            $('#questions').append($questions);
+                            $('#questions').append($dropdown);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error: ", status, error);
+                    }
+                });
+            }
+
+            $('#submitButton').click(function() {
+                // ดึงข้อมูลจาก form หรือ dropdown
+                var qa_id = $('#questions span').val();
+                
+                $.ajax({
+                    url: 'http://localhost:5000/qa_transaction',
+                    method: 'POST',
+                    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
+                    data: {
+                        qa_id: qa_id,
+                        ans_id: selectedAnswers.join('')
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        alert('Success');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error: ", status, error);
+                    }
+                });
+                
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>

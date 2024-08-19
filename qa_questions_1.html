@@ -8,7 +8,7 @@
 </head>
 <body>
     
-    <div id="questions"></div><br/><br/>
+    <div id="questions"></div>
     
     <div id="ansDropdown_1"></div>
 
@@ -35,12 +35,9 @@
             var answers = data.answers_list[0];
             //var $questionStudent = $('#question_'+id+'_student');
             //var $questionParent = $('#question_'+id+'_parent');
-
-            //var $questions = document.createElement("div");
-            //var $dropdown = document.createElement("div");
             
-            var $questions = $('<div></div>')
-            var $dropdown = $('<div></div>')     
+            var $questions = document.createElement("div");
+            var $dropdown = document.createElement("div");
 
             $.each(question_list, function(index, questionItem) {
                         $questions.append(
@@ -51,7 +48,7 @@
                             var $label = $('<label></label>');
                             var $input = $('<input type="radio">').val(answerItem.ans_id);
                             
-                            $input.on('change', function() {
+                            /*$input.on('change', function() {
                                 var value = $(this).val();
                                 
                                 if ($(this).is(':checked')) {
@@ -74,17 +71,16 @@
                                         selectionCount--;
                                     }
                                 }
-                            });
+                            });*/
             
                             $label.append($input).append(answerItem.answer);
-                            $dropdown.append($label).append('<br>');
+                            //$dropdown.append($label).append('<br>');
                         });
                     
                     })
-
-                    $('#questions').append($questions.append($dropdown));
-                    //document.getElementById("questions").innerHTML= $questions;
-                    //document.getElementById("questions").append($dropdown);
+                    
+                    document.getElementById("questions").innerHTML = $questions;
+                    document.getElementById("questions").append($dropdown);
                     
             },
             error: function(xhr, status, error) {
