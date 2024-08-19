@@ -10,7 +10,8 @@
     <h1>Register Account</h1>
     <script>
 
-        var apiUrl = "http://localhost:5000";
+        var apiUrl = "http://localhost:5000/";
+        
         /*var json;
         
         async function getData(){
@@ -76,7 +77,7 @@
 
             // ดึงข้อมูลจาก email
             $.ajax({
-                url: "http://localhost:5000/register_email",
+                url: apiUrl+"register_email",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -94,7 +95,7 @@
 
             // ดึงข้อมูลจาก register_age
             $.ajax({
-                url: "http://localhost:5000/register_age",
+                url: apiUrl+"register_age",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -112,7 +113,7 @@
 
             // ดึงข้อมูลจาก register_gender
             $.ajax({
-                url: "http://localhost:5000/register_gender",
+                url: apiUrl+"register_gender",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -130,7 +131,7 @@
             
             // ดึงข้อมูลจาก register_status
             $.ajax({
-                url: "http://localhost:5000/register_status",
+                url: apiUrl+"register_status",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -148,7 +149,7 @@
             
             // ดึงข้อมูลจาก register_level
             $.ajax({
-                url: "http://localhost:5000/register_degree",
+                url: apiUrl+"register_degree",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -166,7 +167,7 @@
             
             // ดึงข้อมูลจาก register_field_study
             $.ajax({
-                url: "http://localhost:5000/register_field_study",
+                url: apiUrl+"register_field_study",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -184,7 +185,7 @@
             
             // ดึงข้อมูลจาก register_province
             $.ajax({
-                url: "http://localhost:5000/register_province",
+                url: apiUrl+"register_province",
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -217,7 +218,7 @@
                 //var registered_date = new Date().toISOString();
                console.log(email_name);
                     $.ajax({
-                    url: 'http://localhost:5000/register_user',
+                    url: apiUrl+'register_user',
                     method: 'POST',
                     dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
                     data: {
