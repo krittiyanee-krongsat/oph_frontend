@@ -70,54 +70,47 @@
             }
         
             $('#submitButton').click(function() {
-                var qa_answers = {};
-                var temp = [];
-        
+                var qa_array = [];
+                
                 $('#questions span').each(function() {
-                    
                     var questionId = $(this).val();
                     var selectedAnswers = [];
-                    temp = [];
-                    qa_answers = {};
-        
+                    
                     // Collect all selected answers for this question
                     $('#questions input[name="answer' + questionId + '"]:checked').each(function() {
                         selectedAnswers.push($(this).val());
                     });
-        
+                    
                     if (selectedAnswers.length > 0) {
-                        qa_answers['qa_id'] = questionId;
-                        qa_answers['ans_id'] = selectedAnswers;
+                        var qa_answers = {
+                            'qa_id': questionId,
+                            'ans_id': selectedAnswers
+                        };
                         
-                        temp.push(qa_answers);
-                        qa_array.push(temp);
-                        console.log(temp)
-                        
+                        qa_array.push(qa_answers);
                     }
                 });
-
+            
                 var formatJson = {
                     "user_id": 1,
                     "ans_list": qa_array
-                }
+                };
                 
-                qa_array['ans_list'] = temp;
                 console.log(JSON.stringify(formatJson));
                 
-        
                 $.ajax({
                     url: 'http://localhost:5000/qa_transaction',
                     method: 'POST',
                     dataType: 'json',
                     contentType: 'application/json',
-                    data: JSON.stringify(qa_answers)
+                    data: JSON.stringify(formatJson)
                 }).always(function (response) {
                     console.log(response);
                     alert('Success');
                 });
-        
+            
                 return false;
-            });
+            });            
         });
         
     </script>
