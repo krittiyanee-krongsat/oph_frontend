@@ -15,7 +15,9 @@
         $(document).ready(function() {
 
             var questionsData = [];
-        
+            
+            var qa_array = [];
+
             // Fetch questions and answers from the server
             for(let id=1; id <= 5; id++){
                 $.ajax({
@@ -69,10 +71,14 @@
         
             $('#submitButton').click(function() {
                 var qa_answers = {};
+                var temp = [];
         
                 $('#questions span').each(function() {
+                    
                     var questionId = $(this).val();
                     var selectedAnswers = [];
+                    temp = [];
+                    qa_answers = {};
         
                     // Collect all selected answers for this question
                     $('#questions input[name="answer' + questionId + '"]:checked').each(function() {
@@ -80,11 +86,24 @@
                     });
         
                     if (selectedAnswers.length > 0) {
-                        qa_answers[questionId] = selectedAnswers;
+                        qa_answers['qa_id'] = questionId;
+                        qa_answers['ans_id'] = selectedAnswers;
+                        
+                        temp.push(qa_answers);
+                        qa_array.push(temp);
+                        console.log(temp)
+                        
                     }
                 });
-        
-                console.log(qa_answers);
+
+                var formatJson = {
+                    "user_id": 1,
+                    "ans_list": qa_array
+                }
+                
+                qa_array['ans_list'] = temp;
+                console.log(JSON.stringify(formatJson));
+                
         
                 $.ajax({
                     url: 'http://localhost:5000/qa_transaction',
