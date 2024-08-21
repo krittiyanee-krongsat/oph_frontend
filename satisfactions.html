@@ -8,24 +8,24 @@
 </head>
 <body>
 
-    <div id="questions"></div><br/><br/>
+    <div id="satisfactions_q"></div><br/><br/>
     <button id="submitButton">Submit</button>
 
     <script>
         $(document).ready(function() {
 
-            var questionsData = [];
+            var satisfactionsData = [];
 
             // Fetch questions and answers from the server
-            for(let id=1; id <= 5; id++){
+            for(let id=1; id <= 7; id++){
                 $.ajax({
-                    url: "http://localhost:5000/qa_question/"+id,
+                    url: "http://localhost:5000/satisfaction_q/"+id,
                     method: 'GET',
                     dataType: 'json',
                     success: function(data) {
-                        questionsData.push(data);
-                        if (questionsData.length === 5) {
-                            displayQuestions();
+                        satisfactionsData.push(data);
+                        if (satisfactionsData.length === 7) {
+                            displaySatisfaction();
                         }
                     },
                     error: function(xhr, status, error) {
@@ -34,55 +34,55 @@
                 });
             }
         
-            function displayQuestions() {
-                var $questions = $("<div></div>");
+            function displaySatisfaction() {
+                var $satisfaction_q = $("<div></div>");
         
-                $.each(questionsData, function(index, questionData) {
-                    var question_list = questionData.question_list;
-                    var answers = questionData.answers_list[0];
+                $.each(satisfactionsData, function(index, satisfactionsData) {
+                    var satisfactionQ_list = satisfactionsData.satisfactionQ_list;
+                    var satisfactionA_list = satisfactionsData.satisfactionA_list[0];
         
-                    $.each(question_list, function(index, questionItem) {
-                        var $questionContainer = $('<div></div>');
+                    $.each(satisfactionQ_list, function(index, satisfactionsItem) {
+                        var $satisfactionsContainer = $('<div></div>');
                         
                         // Append question text
-                        $questionContainer.append(
-                            $('<span></span>').val(questionItem.qa_id).text(questionItem.q_student)
+                        $satisfactionsContainer.append(
+                            $('<span></span>').val(satisfactionsItem.q_id).text(satisfactionsItem.q_text)
                         );
         
                         // Determine if question is a checkbox or radio button
-                        var inputType = (questionItem.qa_id === 1 || questionItem.qa_id === 5) ? 'checkbox' : 'radio';
+                        var inputType = (satisfactionsItem.q_id === 1 || satisfactionsItem.q_id === 7) ? 'radio' : 'radio';
                         
-                        $.each(answers, function(index, answerItem) {
+                        $.each(satisfactionA_list, function(index, answerItem) {
                             var $label = $('<label></label>');
-                            var $input = $('<input type="' + inputType + '" name="answer' + questionItem.qa_id + '">').val(answerItem.ans_id);
+                            var $input = $('<input type="' + inputType + '" name="answer' + satisfactionsItem.q_id + '">').val(answerItem.a_id);
         
-                            $label.append($input).append(answerItem.answer);
-                            $questionContainer.append('<br>').append($label);
+                            $label.append($input).append(answerItem.ans_text);
+                            $satisfactionsContainer.append('<br>').append($label);
                         });
         
-                        $questions.append($questionContainer).append('<br>');
+                        $satisfaction_q.append($satisfactionsContainer).append('<br>');
                     });
                 });
         
-                $('#questions').html($questions);
+                $('#satisfactions_q').html($satisfaction_q);
             }
         
             $('#submitButton').click(function() {
                 var qa_array = [];
                 
                 $('#questions span').each(function() {
-                    var questionId = $(this).val();
+                    var satisfactionId = $(this).val();
                     var selectedAnswers = [];
                     
                     // Collect all selected answers for this question
-                    $('#questions input[name="answer' + questionId + '"]:checked').each(function() {
+                    $('#questions input[name="answer' + satisfactionId + '"]:checked').each(function() {
                         selectedAnswers.push($(this).val());
                     });
                     
                     if (selectedAnswers.length > 0) {
                         var qa_answers = {
-                            'qa_id': questionId,
-                            'ans_id': selectedAnswers
+                            'q_id': satisfactionId,
+                            'a_id': selectedAnswers
                         };
                         
                         qa_array.push(qa_answers);
@@ -90,8 +90,7 @@
                 });
             
                 var formatJson = {
-                    "user_id": 1,
-                    "ans_list": qa_array
+                    "satisfaction_list": qa_array
                 };
                 
                 console.log(JSON.stringify(formatJson));
@@ -114,10 +113,6 @@
     </script>
 </body>
 </html>
-
-
-
-
 
 
 
