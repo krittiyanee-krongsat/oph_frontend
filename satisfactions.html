@@ -25,7 +25,7 @@
                     // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
                     for(let id=1; id <= 7; id++){
                         $.ajax({
-                            url: "http://localhost:5000/satisfaction_q/"+id,
+                            url: apiUrl+"satisfaction_q/"+id,
                             method: 'GET',
                             dataType: 'json',
                             success: function(data) {
@@ -116,7 +116,7 @@
                         console.log(JSON.stringify(formatJson));
                         
                         $.ajax({
-                            url: 'http://localhost:5000/satisfaction_transaction',
+                            url: apiUrl+'satisfaction_transaction',
                             method: 'POST',
                             dataType: 'json',
                             contentType: 'application/json',

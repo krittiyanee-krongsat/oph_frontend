@@ -7,7 +7,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
     <script> 
-        
+
         //var apiUrl = "http://localhost:5000/";
         var apiUrl = "http://deepseaoph2024.bu.ac.th/api/";
 
@@ -26,7 +26,7 @@
                     // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
                     for(let id=1; id <= 5; id++){
                         $.ajax({
-                            url: "http://localhost:5000/qa_question/"+id,
+                            url: apiUrl+"qa_question/"+id,
                             method: 'GET',
                             dataType: 'json',
                             success: function(data) {
@@ -135,7 +135,7 @@
                         
                         // ส่งข้อมูลคำตอบไปยังเซิร์ฟเวอร์
                         $.ajax({
-                            url: 'http://localhost:5000/qa_transaction',
+                            url: apiUrl+'qa_transaction',
                             method: 'POST',
                             dataType: 'json',
                             contentType: 'application/json',
