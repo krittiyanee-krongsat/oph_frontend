@@ -26,7 +26,7 @@
                     // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
                     for(let id=1; id <= 5; id++){
                         $.ajax({
-                            url: apiUrl+"qa_question/"+id,
+                            url: apiUrl+"qa_questions/"+id,
                             method: 'GET',
                             dataType: 'json',
                             success: function(data) {
