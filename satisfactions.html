@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +8,8 @@
 </head>
     <script> 
             
-        //var apiUrl = "http://localhost:5000/";
-        var apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
+        var apiUrl = "http://localhost:5000/";
+        //var apiUrl = "http://deepseaoph2024.bu.ac.th/api/";
 
     </script>
         <body>
@@ -41,45 +40,41 @@
                         });
                     }
                 
-                    function displayQuestions() {
-                        var $questions = $("<div></div>");
-                    
-                        // Sort questionsData by qa_id to ensure correct order
-                        questionsData.sort(function(a, b) {
-                            return a.question_list[0].qa_id - b.question_list[0].qa_id;
-                        });
-                    
-                        $.each(questionsData, function(index, questionData) {
-                            var question_list = questionData.question_list;
-                            var answers = questionData.answers_list[0];
-                    
-                            $.each(question_list, function(index, questionItem) {
-                                var $questionContainer = $('<div></div>');
-                    
-                                // Show question text
-                                $questionContainer.append(
-                                    $('<span></span>').val(questionItem.qa_id).text(questionItem.q_student)
+                    function displaySatisfaction() {
+                        var $satisfaction_q = $("<div></div>");
+                        
+                        satisfactionsData.forEach(function(data) {
+                            var satisfactionQ_list = data.satisfactionQ_list;
+                            var satisfactionA_list = data.satisfactionA_list[0]; // Ensure this is the correct structure
+                            
+                            satisfactionQ_list.forEach(function(satisfactionsItem) {
+                                var $satisfactionsContainer = $('<div></div>');
+                                
+                                // แสดงข้อความคำถาม
+                                $satisfactionsContainer.append(
+                                    $('<span></span>').attr('value', satisfactionsItem.q_id).text(satisfactionsItem.q_text)
                                 );
                     
-                                // Set input type to checkbox or radio
-                                var inputType = (questionItem.qa_id === 1 || questionItem.qa_id === 5) ? 'checkbox' : 'radio';
+                                if (satisfactionsItem.q_id === 7) {
+                                    // สำหรับคำถามที่ 7 ใช้เป็นช่องกรอกข้อความ
+                                    $satisfactionsContainer.append('<br><input type="text" name="answer' + satisfactionsItem.q_id + '">');
+                                } else {
+                                    // สำหรับคำถามที่ 1-6 ใช้ปุ่มเลือก (radio buttons)
+                                    satisfactionA_list.forEach(function(answerItem) {
+                                        var $label = $('<label></label>');
+                                        var $input = $('<input type="radio" name="answer' + satisfactionsItem.q_id + '">').val(answerItem.a_id);
+                                        
+                                        $label.append($input).append(answerItem.a_text);
+                                        $satisfactionsContainer.append('<br>').append($label);
+                                    });
+                                }
                     
-                                $.each(answers, function(index, answerItem) {
-                                    var $label = $('<label></label>');
-                                    var $input = $('<input type="' + inputType + '" name="answer' + questionItem.qa_id + '">').val(answerItem.ans_id);
-                    
-                                    $label.append($input).append(answerItem.answer);
-                                    $questionContainer.append('<br>').append($label);
-                                });
-                    
-                                $questions.append($questionContainer).append('<br>');
+                                $satisfaction_q.append($satisfactionsContainer).append('<br>');
                             });
                         });
                     
-                        $('#questions').html($questions);
-                        enableSubmitButton(); // Call function to set initial state of submit button
+                        $('#satisfactions_q').html($satisfaction_q);
                     }
-                    
                     
                 
                     $('#submitButton').click(function() {
@@ -121,7 +116,7 @@
                         console.log(JSON.stringify(formatJson));
                         
                         $.ajax({
-                            url: apiUrl+'satisfaction_transaction', //ตรวจสอบให้แน่ใจว่า apiUrl ถูกตั้งค่าอย่างถูกต้อง
+                            url: apiUrl+'satisfaction_transaction', // Ensure apiUrl is correctly set
                             method: 'POST',
                             dataType: 'json',
                             contentType: 'application/json',
