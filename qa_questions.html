@@ -8,8 +8,8 @@
 </head>
     <script> 
 
-        //var apiUrl = "http://localhost:5000/";
-        var apiUrl = "http://deepseaoph2024.bu.ac.th/api/";
+        var apiUrl = "http://localhost:5000/";
+        //var apiUrl = "http://deepseaoph2024.bu.ac.th/api/";
 
     </script>
         <body>
@@ -26,7 +26,7 @@
                     // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
                     for(let id=1; id <= 5; id++){
                         $.ajax({
-                            url: apiUrl+"qa_questions/"+id,
+                            url: apiUrl+"qa_question/"+id,
                             method: 'GET',
                             dataType: 'json',
                             success: function(data) {

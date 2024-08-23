@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,8 +9,8 @@
 </head>
     <script> 
             
-        //var apiUrl = "http://localhost:5000/";
-        var apiUrl = "http://deepseaoph2024.bu.ac.th/api/";
+        var apiUrl = "http://localhost:5000/";
+        //var apiUrl = "http://deepseaoph2024.bu.ac.th/api/";
 
     </script>
         <body>
@@ -42,46 +43,46 @@
                 
                     function displaySatisfaction() {
                         var $satisfaction_q = $("<div></div>");
-                
-                        $.each(satisfactionsData, function(index, satisfactionsData) {
-                            var satisfactionQ_list = satisfactionsData.satisfactionQ_list;
-                            var satisfactionA_list = satisfactionsData.satisfactionA_list[0];
-                
-                            $.each(satisfactionQ_list, function(index, satisfactionsItem) {
+                        
+                        satisfactionsData.forEach(function(data) {
+                            var satisfactionQ_list = data.satisfactionQ_list;
+                            var satisfactionA_list = data.satisfactionA_list[0]; // Ensure this is the correct structure
+                            
+                            satisfactionQ_list.forEach(function(satisfactionsItem) {
                                 var $satisfactionsContainer = $('<div></div>');
                                 
                                 // แสดงข้อความคำถาม
                                 $satisfactionsContainer.append(
-                                    $('<span></span>').val(satisfactionsItem.q_id).text(satisfactionsItem.q_text)
+                                    $('<span></span>').attr('value', satisfactionsItem.q_id).text(satisfactionsItem.q_text)
                                 );
-
+                    
                                 if (satisfactionsItem.q_id === 7) {
                                     // สำหรับคำถามที่ 7 ใช้เป็นช่องกรอกข้อความ
                                     $satisfactionsContainer.append('<br><input type="text" name="answer' + satisfactionsItem.q_id + '">');
                                 } else {
                                     // สำหรับคำถามที่ 1-6 ใช้ปุ่มเลือก (radio buttons)
-                                    $.each(satisfactionA_list, function(index, answerItem) {
+                                    satisfactionA_list.forEach(function(answerItem) {
                                         var $label = $('<label></label>');
                                         var $input = $('<input type="radio" name="answer' + satisfactionsItem.q_id + '">').val(answerItem.a_id);
                                         
-                                        $label.append($input).append(answerItem.ans_text);
+                                        $label.append($input).append(answerItem.a_text);
                                         $satisfactionsContainer.append('<br>').append($label);
                                     });
                                 }
-                
+                    
                                 $satisfaction_q.append($satisfactionsContainer).append('<br>');
                             });
                         });
-                
+                    
                         $('#satisfactions_q').html($satisfaction_q);
                     }
+                    
                 
                     $('#submitButton').click(function() {
                         var qa_array = [];
-                        var temp = [];
-                        
+                    
                         $('#satisfactions_q span').each(function() {
-                            var satisfactionId = $(this).val();
+                            var satisfactionId = $(this).attr('value');
                             var selectedAnswers = [];
                             if (satisfactionId === '7') {
                                 // เก็บข้อมูลช่องกรอกข้อความสำหรับคำถามที่ 7
@@ -91,6 +92,7 @@
                                         'q_id': satisfactionId,
                                         'a_id': [textAnswer]
                                     };
+                                    qa_array.push(qa_answers);
                                 }
                             } else {
                                 // เก็บข้อมูลคำตอบที่เลือกสำหรับคำถามที่เป็น radio buttons
@@ -103,31 +105,32 @@
                                         'q_id': satisfactionId,
                                         'a_id': selectedAnswers
                                     };
-                                }   
+                                    qa_array.push(qa_answers);
+                                }
                             }
-                            qa_array.push(qa_answers);
-                            console.log(qa_answers);
                         });
                     
                         var formatJson = {
                             "satisfaction_list": qa_array
                         };
-
+                    
                         console.log(JSON.stringify(formatJson));
                         
                         $.ajax({
-                            url: apiUrl+'satisfaction_transaction',
+                            url: apiUrl+'satisfaction_transaction', //ตรวจสอบให้แน่ใจว่า apiUrl ถูกตั้งค่าอย่างถูกต้อง
                             method: 'POST',
                             dataType: 'json',
                             contentType: 'application/json',
                             data: JSON.stringify(formatJson)
-                        }).always(function (response) {
+                        }).done(function(response) {
                             console.log(response);
                             alert('Success');
+                        }).fail(function(xhr, status, error) {
+                            console.error("AJAX Error: ", status, error);
                         });
-                    
+                        
                         return false;
-                    });            
+                    });                              
                 });
                 
             </script>
