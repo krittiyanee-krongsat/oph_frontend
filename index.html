@@ -209,6 +209,7 @@
                 var degree_id =  $('#degreeDropdown').val(); 
                 var field_study_name = $('#field_study_input').val().trim();
                 var province_id = $('#province_Dropdown').val();
+                var result_id = $('#resultUser').val()
                 //var registered_date = new Date().toISOString();
                 console.log(email_name);
                 console.log(field_study_name);
@@ -225,6 +226,7 @@
                         degree_id: degree_id,
                         field_study_name: field_study_name,
                         province_id: province_id,
+                        result_id:result_id,
                     }
                 }).always(function (response) {
                     console.log(response);
