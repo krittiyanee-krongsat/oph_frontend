@@ -78,17 +78,18 @@
 
             $('#submitButton').click(function() {
                 var qa_array = [];
-
+            
                 $('#satisfactions_q span').each(function() {
                     var satisfactionId = $(this).attr('value');
                     var selectedAnswers = [];
+                    
                     if (satisfactionId === '7') {
                         // เก็บข้อมูลช่องกรอกข้อความสำหรับคำถามที่ 7
                         var textAnswer = $('input[name="answer' + satisfactionId + '"]').val();
                         if (textAnswer) {
                             var qa_answers = {
                                 'q_id': satisfactionId,
-                                'a_id': [textAnswer]
+                                'a_id': [textAnswer]  // Ensure a_id is always an array
                             };
                             qa_array.push(qa_answers);
                         }
@@ -97,24 +98,24 @@
                         $('#satisfactions_q input[name="answer' + satisfactionId + '"]:checked').each(function() {
                             selectedAnswers.push($(this).val());
                         });
-
+            
                         if (selectedAnswers.length > 0) {
-                            var qa_answers ={
+                            var qa_answers = {
                                 'q_id': satisfactionId,
-                                'a_id': selectedAnswers
+                                'a_id': selectedAnswers  // Ensure a_id is always an array
                             };
                             qa_array.push(qa_answers);
                         }
                     }
                 });
-
+            
                 var formatJson = {
                     "user_id": user_id,
                     "satisfaction_list": qa_array
                 };
-
+            
                 console.log(JSON.stringify(formatJson));
-
+            
                 $.ajax({
                     url: apiUrl + 'satisfaction_transaction',
                     method: 'POST',
@@ -127,9 +128,9 @@
                 }).fail(function(xhr, status, error) {
                     console.error("AJAX Error: ", status, error);
                 });
-
+            
                 return false;
-            });
+            });            
         });
     </script>
 </body>
