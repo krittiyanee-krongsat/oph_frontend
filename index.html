@@ -145,7 +145,7 @@
                 }
             });
             
-            // ดึงข้อมูลจาก register_level
+            // ดึงข้อมูลจาก register_degree
             $.ajax({
                 url: apiUrl+"register_degree",
                 method: 'GET',
@@ -214,7 +214,7 @@
                 console.log(email_name);
                 console.log(field_study_name);
 
-                    $.ajax({
+                    /*$.ajax({
                     url: apiUrl+'register_user',
                     method: 'POST',
                     dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
@@ -232,6 +232,29 @@
                     console.log(response);
                     alert('success');
                 })
+                return false;*/
+
+                // ส่งข้อมูลคำตอบไปยังเซิร์ฟเวอร์
+                $.ajax({
+                    url:apiUrl+'register_user',
+                    method: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: {
+                        email_name:email_name,
+                        age_id: age_id,
+                        gender_id:gender_id,
+                        status_id: status_id,
+                        degree_id: degree_id,
+                        field_study_name: field_study_name,
+                        province_id: province_id,
+                        result_id:result_id,
+                    }
+                }).always(function (response) {
+                    console.log(response);
+                    alert('Success');
+                });
+            
                 return false;
                 });
             });
