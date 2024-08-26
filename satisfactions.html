@@ -11,8 +11,8 @@
     <button id="submitButton">Submit</button>
 
     <script>
-        //var apiUrl = "http://localhost:5000/";
-        var apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
+        var apiUrl = "http://localhost:5000/";
+        //var apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
 
         $(document).ready(function() {
             var satisfactionsData = [];
@@ -109,7 +109,7 @@
                 });
 
                 var formatJson = {
-                    //"user_id": user_id,
+                    "user_id": 1,
                     "satisfaction_list": qa_array
                 };
 
