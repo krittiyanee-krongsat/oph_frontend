@@ -200,48 +200,40 @@
             });
             
             // ฟังการคลิกปุ่ม Submit
-            $('#submitButton').click(function(event) {
-                event.preventDefault(); // Prevent the default form submission
-
+            $('#submitButton').click(function() {
                 // ดึงข้อมูลจาก form หรือ dropdown
                 var email_name = $('#emailUser').val().trim();
                 var age_id = $('#ageDropdown').val();
                 var gender_id = $('#genderDropdown').val();
                 var status_id = $('#statusDropdown').val(); 
-                var degree_id = $('#degreeDropdown').val(); 
+                var degree_id =  $('#degreeDropdown').val(); 
                 var field_study_name = $('#field_study_input').val().trim();
                 var province_id = $('#province_Dropdown').val();
+                //var result_id = $('#resultUser').val();
+                //var registered_date = new Date().toISOString();
+                console.log(email_name);
+                console.log(field_study_name);
 
-                // Optional: Validate fields here
-                if (!email_name || !field_study_name) {
-                    alert('Please fill in all required fields.');
-                    return;
-                }
-
-                // Perform AJAX request
-                $.ajax({
-                    url: apiUrl + 'register_user',
+                    $.ajax({
+                    url: apiUrl+'register_user',
                     method: 'POST',
-                    dataType: 'json', // Data expected in JSON format
+                    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
                     data: {
-                        email_name: email_name,
+                        email_name:email_name,
                         age_id: age_id,
-                        gender_id: gender_id,
+                        gender_id:gender_id,
                         status_id: status_id,
                         degree_id: degree_id,
                         field_study_name: field_study_name,
                         province_id: province_id,
-                        // Uncomment if needed
-                        // result_id: result_id,
+                        //result_id:result_id,
                     }
-                }).done(function(response) {
-                    console.log('Success:', response);
-                    alert('Registration successful!');
-                }).fail(function(jqXHR, textStatus, errorThrown) {
-                    console.log('Error:', textStatus, errorThrown);
-                    alert('An error occurred. Please try again.');
+                }).always(function (response) {
+                    console.log(response);
+                    alert('success');
+                })
+                return false;
                 });
-            });
             });
     </script>
 </body>
