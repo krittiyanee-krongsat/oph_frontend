@@ -22,7 +22,7 @@
                 $(document).ready(function() {
 
                     var questionsData = [];
-
+                
                     // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
                     for(let id=1; id <= 5; id++){
                         $.ajax({
@@ -43,11 +43,16 @@
                 
                     function displayQuestions() {
                         var $questions = $("<div></div>");
+                        
+                        // จัดเรียงข้อมูลคำถามตาม ID
+                        questionsData.sort(function(a, b) {
+                            return a.question_list[0].qa_id - b.question_list[0].qa_id;
+                        });
                 
                         $.each(questionsData, function(index, questionData) {
                             var question_list = questionData.question_list;
                             var answers = questionData.answers_list[0];
-                
+                            
                             $.each(question_list, function(index, questionItem) {
                                 var $questionContainer = $('<div></div>');
                                 
@@ -55,18 +60,18 @@
                                 $questionContainer.append(
                                     $('<span></span>').val(questionItem.qa_id).text(questionItem.q_student)
                                 );
-                
+                                
                                 // กำหนดประเภทของการป้อนข้อมูลเป็น checkbox หรือ radio
                                 var inputType = (questionItem.qa_id === 1 || questionItem.qa_id === 5) ? 'checkbox' : 'radio';
                                 
                                 $.each(answers, function(index, answerItem) {
                                     var $label = $('<label></label>');
                                     var $input = $('<input type="' + inputType + '" name="answer' + questionItem.qa_id + '">').val(answerItem.ans_id);
-                
+                                    
                                     $label.append($input).append(answerItem.answer);
                                     $questionContainer.append('<br>').append($label);
                                 });
-                
+                                
                                 $questions.append($questionContainer).append('<br>');
                             });
                         });
@@ -74,15 +79,15 @@
                         $('#questions').html($questions);
                         enableSubmitButton(); // เรียกฟังก์ชันเพื่อกำหนดสถานะเริ่มต้นของปุ่มส่ง
                     }
-
+                
                     function enableSubmitButton() {
                         $('#submitButton').prop('disabled', false);
                         validateAnswers(); // ตรวจสอบความถูกต้องของคำตอบเบื้องต้น
                     }
-
+                
                     function validateAnswers() {
                         var valid = true;
-
+                
                         // ตรวจสอบความถูกต้องของคำตอบสำหรับคำถามประเภท checkbox
                         $('input[type="checkbox"]').each(function() {
                             var questionId = $(this).attr('name').replace('answer', '');
@@ -94,15 +99,15 @@
                                 return false; // ออกจากลูป
                             }
                         });
-
+                
                         $('#submitButton').prop('disabled', !valid);
                     }
-
+                
                     // ฟังก์ชันสำหรับเปลี่ยนแปลงค่าใน checkbox หรือ radio button
                     $('#questions').on('change', 'input[type="checkbox"], input[type="radio"]', function() {
                         validateAnswers();
                     });
-
+                
                     $('#submitButton').click(function() {
                         var qa_array = [];
                         
@@ -147,7 +152,7 @@
                     
                         return false;
                     });            
-                });
+                });                
                 
             </script>
         </body>
