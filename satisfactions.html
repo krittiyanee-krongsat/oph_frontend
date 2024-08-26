@@ -121,7 +121,7 @@
                     dataType: 'json',
                     contentType: 'application/json',
                     data: JSON.stringify(formatJson)
-                }).done(function(response) {
+                }).always(function(response) { //done
                     console.log(response);
                     alert('Success');
                 }).fail(function(xhr, status, error) {
