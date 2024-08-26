@@ -217,7 +217,7 @@
                 $.ajax({
                     url: apiUrl + 'register_user',
                     method: 'POST',
-                    dataType: 'json', // datatype ที่ส่งมาเป็นรูปแบบ json
+                    dataType: 'text', // เปลี่ยนเป็น 'text' เพื่อดูข้อมูลที่ได้รับ
                     data: {
                         register_id: register_id,
                         email_name: email_name,
@@ -232,12 +232,18 @@
                 })
                 .done(function(response) {
                     console.log('Success:', response);
-                    alert('Success');
+                    try {
+                        var jsonResponse = JSON.parse(response); // ลองแปลงข้อมูลเป็น JSON
+                        console.log(jsonResponse);
+                    } catch (e) {
+                        console.error('Failed to parse JSON:', e);
+                    }
                 })
                 .fail(function(jqXHR, textStatus, errorThrown) {
                     console.error('Error:', textStatus, errorThrown);
                     alert('Failed to submit data');
                 });
+                
             
                 return false;
             });
