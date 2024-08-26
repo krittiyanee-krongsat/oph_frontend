@@ -6,135 +6,134 @@
     <title>satisfactionsQA</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-    <script> 
-            
+<body>
+    <div id="satisfactions_q"></div><br/><br/>
+    <button id="submitButton">Submit</button>
+
+    <script>
         //var apiUrl = "http://localhost:5000/";
         var apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
 
-    </script>
-        <body>
+        $(document).ready(function() {
+            var satisfactionsData = [];
+            var questionsCount = 7;
 
-            <div id="satisfactions_q"></div><br/><br/>
-            <button id="submitButton">Submit</button>
-
-            <script>
-                $(document).ready(function() {
-
-                    var satisfactionsData = [];
-
-                    // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
-                    for(let id=1; id <= 7; id++){
-                        $.ajax({
-                            url: apiUrl+"satisfaction_q/"+id,
-                            method: 'GET',
-                            dataType: 'json',
-                            success: function(data) {
-                                satisfactionsData.push(data);
-                                if (satisfactionsData.length === 7) {
-                                    displaySatisfaction();
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                console.error("AJAX Error: ", status, error);
-                            }
-                        });
+            // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
+            for(let id = 1; id <= questionsCount; id++) {
+                $.ajax({
+                    url: apiUrl + "satisfaction_q/" + id,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        satisfactionsData[id] = data; // Save data at index corresponding to question ID
+                        if (Object.keys(satisfactionsData).length === questionsCount) {
+                            displaySatisfaction();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error: ", status, error);
                     }
-                
-                    function displaySatisfaction() {
-                        var $satisfaction_q = $("<div></div>");
-                        
-                        satisfactionsData.forEach(function(data) {
-                            var satisfactionQ_list = data.satisfactionQ_list;
-                            var satisfactionA_list = data.satisfactionA_list[0]; // Ensure this is the correct structure
-                            
-                            satisfactionQ_list.forEach(function(satisfactionsItem) {
-                                var $satisfactionsContainer = $('<div></div>');
-                                
-                                // แสดงข้อความคำถาม
-                                $satisfactionsContainer.append(
-                                    $('<span></span>').attr('value', satisfactionsItem.q_id).text(satisfactionsItem.q_text)
-                                );
-                    
-                                if (satisfactionsItem.q_id === 7) {
-                                    // สำหรับคำถามที่ 7 ใช้เป็นช่องกรอกข้อความ
-                                    $satisfactionsContainer.append('<br><input type="text" name="answer' + satisfactionsItem.q_id + '">');
-                                } else {
-                                    // สำหรับคำถามที่ 1-6 ใช้ปุ่มเลือก (radio buttons)
-                                    satisfactionA_list.forEach(function(answerItem) {
-                                        var $label = $('<label></label>');
-                                        var $input = $('<input type="radio" name="answer' + satisfactionsItem.q_id + '">').val(answerItem.a_id);
-                                        
-                                        $label.append($input).append(answerItem.a_text);
-                                        $satisfactionsContainer.append('<br>').append($label);
-                                    });
-                                }
-                    
-                                $satisfaction_q.append($satisfactionsContainer).append('<br>');
-                            });
-                        });
-                    
-                        $('#satisfactions_q').html($satisfaction_q);
-                    }
-                    
-                
-                    $('#submitButton').click(function() {
-                        var qa_array = [];
-                    
-                        $('#satisfactions_q span').each(function() {
-                            var satisfactionId = $(this).attr('value');
-                            var selectedAnswers = [];
-                            if (satisfactionId === '7') {
-                                // เก็บข้อมูลช่องกรอกข้อความสำหรับคำถามที่ 7
-                                var textAnswer = $('input[name="answer' + satisfactionId + '"]').val();
-                                if (textAnswer) {
-                                    var qa_answers = {
-                                        'q_id': satisfactionId,
-                                        'a_id': [textAnswer]
-                                    };
-                                    qa_array.push(qa_answers);
-                                }
-                            } else {
-                                // เก็บข้อมูลคำตอบที่เลือกสำหรับคำถามที่เป็น radio buttons
-                                $('#satisfactions_q input[name="answer' + satisfactionId + '"]:checked').each(function() {
-                                    selectedAnswers.push($(this).val());
-                                });
-                                
-                                if (selectedAnswers.length > 0) {
-                                    var qa_answers ={
-                                        'q_id': satisfactionId,
-                                        'a_id': selectedAnswers
-                                    };
-                                    qa_array.push(qa_answers);
-                                }
-                            }
-                        });
-                    
-                        var formatJson = {
-                            "satisfaction_list": qa_array
-                        };
-                    
-                        console.log(JSON.stringify(formatJson));
-                        
-                        $.ajax({
-                            url: apiUrl+'satisfaction_transaction', // Ensure apiUrl is correctly set
-                            method: 'POST',
-                            dataType: 'json',
-                            contentType: 'application/json',
-                            data: JSON.stringify(formatJson)
-                        }).done(function(response) {
-                            console.log(response);
-                            alert('Success');
-                        }).fail(function(xhr, status, error) {
-                            console.error("AJAX Error: ", status, error);
-                        });
-                        
-                        return false;
-                    });                              
                 });
-                
-            </script>
-        </body>
+            }
+
+            function displaySatisfaction() {
+                var $satisfaction_q = $("<div></div>");
+
+                // Sort questions by ID and display them
+                for(let id = 1; id <= questionsCount; id++) {
+                    let data = satisfactionsData[id];
+                    if (data) {
+                        var satisfactionQ_list = data.satisfactionQ_list;
+                        var satisfactionA_list = data.satisfactionA_list[0]; // Ensure this is the correct structure
+
+                        satisfactionQ_list.forEach(function(satisfactionsItem) {
+                            var $satisfactionsContainer = $('<div></div>');
+
+                            // แสดงข้อความคำถาม
+                            $satisfactionsContainer.append(
+                                $('<span></span>').attr('value', satisfactionsItem.q_id).text(satisfactionsItem.q_text)
+                            );
+
+                            if (satisfactionsItem.q_id === 7) {
+                                // สำหรับคำถามที่ 7 ใช้เป็นช่องกรอกข้อความ
+                                $satisfactionsContainer.append('<br><input type="text" name="answer' + satisfactionsItem.q_id + '">');
+                            } else {
+                                // สำหรับคำถามที่ 1-6 ใช้ปุ่มเลือก (radio buttons)
+                                satisfactionA_list.forEach(function(answerItem) {
+                                    var $label = $('<label></label>');
+                                    var $input = $('<input type="radio" name="answer' + satisfactionsItem.q_id + '">').val(answerItem.a_id);
+
+                                    $label.append($input).append(answerItem.a_text);
+                                    $satisfactionsContainer.append('<br>').append($label);
+                                });
+                            }
+
+                            $satisfaction_q.append($satisfactionsContainer).append('<br>');
+                        });
+                    }
+                }
+
+                $('#satisfactions_q').html($satisfaction_q);
+            }
+
+            $('#submitButton').click(function() {
+                var qa_array = [];
+
+                $('#satisfactions_q span').each(function() {
+                    var satisfactionId = $(this).attr('value');
+                    var selectedAnswers = [];
+                    if (satisfactionId === '7') {
+                        // เก็บข้อมูลช่องกรอกข้อความสำหรับคำถามที่ 7
+                        var textAnswer = $('input[name="answer' + satisfactionId + '"]').val();
+                        if (textAnswer) {
+                            var qa_answers = {
+                                'q_id': satisfactionId,
+                                'a_id': [textAnswer]
+                            };
+                            qa_array.push(qa_answers);
+                        }
+                    } else {
+                        // เก็บข้อมูลคำตอบที่เลือกสำหรับคำถามที่เป็น radio buttons
+                        $('#satisfactions_q input[name="answer' + satisfactionId + '"]:checked').each(function() {
+                            selectedAnswers.push($(this).val());
+                        });
+
+                        if (selectedAnswers.length > 0) {
+                            var qa_answers ={
+                                'q_id': satisfactionId,
+                                'a_id': selectedAnswers
+                            };
+                            qa_array.push(qa_answers);
+                        }
+                    }
+                });
+
+                var formatJson = {
+                    "satisfaction_list": qa_array
+                };
+
+                console.log(JSON.stringify(formatJson));
+
+                $.ajax({
+                    url: apiUrl + 'satisfaction_transaction',
+                    method: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formatJson)
+                }).done(function(response) {
+                    console.log(response);
+                    alert('Success');
+                }).fail(function(xhr, status, error) {
+                    console.error("AJAX Error: ", status, error);
+                });
+
+                return false;
+            });
+        });
+    </script>
+</body>
 </html>
+
 
 
 
