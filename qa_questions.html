@@ -110,7 +110,6 @@
                 
                     $('#submitButton').click(function() {
                         var qa_array = [];
-                        var submitCount = 1;
                         
                         // สร้างอาร์เรย์สำหรับเก็บคำตอบ
                         $('#questions span').each(function() {
@@ -133,7 +132,7 @@
                         });
                     
                         var formatJson = {
-                            "user_id": submitCount,
+                            "user_id": 1,
                             "ans_list": qa_array
                         };
                         
