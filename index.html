@@ -202,6 +202,7 @@
             // ฟังการคลิกปุ่ม Submit
             $('#submitButton').click(function() {
                 // ดึงข้อมูลจาก form หรือ dropdown
+                var register_id = $('#registerUser').val();
                 var email_name = $('#emailUser').val().trim();
                 var age_id = $('#ageDropdown').val();
                 var gender_id = $('#genderDropdown').val();
@@ -218,6 +219,7 @@
                     method: 'POST',
                     dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
                     data: {
+                        register_id:register_id,
                         email_name:email_name,
                         age_id: age_id,
                         gender_id:gender_id,
