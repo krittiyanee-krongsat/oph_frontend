@@ -86,10 +86,10 @@ const setDegree = () => {
   var choice3 = document.getElementById("Voc").checked
   //if (choice3) {
   localStorage.setItem('degree', document.querySelector('input[name="value-degree"]:checked').value);
-  location.replace("5_1_FosVoc.html");
+  location.replace("5_1_FosVoc.html"); //ปวช ปวส
   /*} else {
   localStorage.setItem('degree', document.querySelector('input[name="value-degree"]:checked').value);
-  location.replace("6_Fos.html");
+  location.replace("6_Fos.html"); //นักศึกษา
   }*/
 }
 
@@ -121,8 +121,8 @@ location.replace("6_Fos.html");
 //*Faculty*//
 const setFaculty = () => {
   localStorage.setItem('faculty', document.getElementById('txtFaculty').value);
-    //location.replace("../StudentPage/1_SDeepsea.html");
-    location.replace("../infoPage/5_Degree.html");
+    location.replace("../StudentPage/1_SDeepsea.html");
+    //location.replace("../infoPage/5_Degree.html");
 }
 
 const goBackFaculty = () => {
