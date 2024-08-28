@@ -18,24 +18,28 @@
         $(document).ready(function() {
             var questionsData = [];
             var selectedAnswers = {}; // สำหรับเก็บคำตอบที่เลือก
-
+        
             // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
-            for(let id = 1; id <= 5; id++){
-                $.ajax({
-                    url: apiUrl + "qa_question/" + id,
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(data) {
-                        questionsData.push(data);
-                        if (questionsData.length === 5) {
-                            displayQuestions();
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("AJAX Error: ", status, error);
-                    }
-                });
+            var ajaxCalls = [];
+            for (let id = 1; id <= 5; id++) {
+                ajaxCalls.push(
+                    $.ajax({
+                        url: apiUrl + "qa_question/" + id,
+                        method: 'GET',
+                        dataType: 'json'
+                    })
+                );
             }
+        
+            $.when.apply($, ajaxCalls).done(function() {
+                $.each(arguments, function(index, data) {
+                    questionsData.push(data[0]);
+                });
+        
+                displayQuestions();
+            }).fail(function(xhr, status, error) {
+                console.error("AJAX Error: ", status, error);
+            });
         
             function displayQuestions() {
                 var $questions = $("<div></div>");
@@ -70,15 +74,15 @@
                 $('#questions').html($questions);
                 enableSubmitButton(); // เรียกฟังก์ชันเพื่อกำหนดสถานะเริ่มต้นของปุ่มส่ง
             }
-
+        
             function enableSubmitButton() {
                 $('#submitButton').prop('disabled', false);
                 validateAnswers(); // ตรวจสอบความถูกต้องของคำตอบเบื้องต้น
             }
-
+        
             function validateAnswers() {
                 var valid = true;
-
+        
                 // ตรวจสอบความถูกต้องของคำตอบสำหรับคำถามประเภท checkbox
                 $('input[type="checkbox"]').each(function() {
                     var questionId = $(this).attr('name').replace('answer', '');
@@ -90,15 +94,15 @@
                         return false; // ออกจากลูป
                     }
                 });
-
+        
                 $('#submitButton').prop('disabled', !valid);
             }
-
+        
             // ฟังก์ชันสำหรับเปลี่ยนแปลงค่าใน checkbox หรือ radio button
             $('#questions').on('change', 'input[type="checkbox"], input[type="radio"]', function() {
                 var questionId = $(this).closest('div').find('span').attr('data-id');
                 var selectedAnswer = $(this).val();
-
+        
                 // ตรวจสอบชนิดของการเลือก
                 if ($(this).is(':checked')) {
                     if (!selectedAnswers[questionId]) {
@@ -113,13 +117,13 @@
                         selectedAnswers[questionId].splice(index, 1);
                     }
                 }
-
+        
                 validateAnswers();
             });
-
+        
             $('#submitButton').click(function() {
                 var qa_array = [];
-
+        
                 $.each(selectedAnswers, function(questionId, answers) {
                     if (answers.length > 0) {
                         var qa_answers = {
@@ -130,14 +134,14 @@
                         qa_array.push(qa_answers);
                     }
                 });
-
+        
                 var formatJson = {
                     "user_id": 1,
                     "ans_list": qa_array
                 };
-
+        
                 console.log(JSON.stringify(formatJson));
-
+        
                 // ส่งข้อมูลคำตอบไปยังเซิร์ฟเวอร์
                 $.ajax({
                     url: apiUrl + 'qa_transaction',
@@ -154,10 +158,10 @@
                         alert('Error');
                     }
                 });
-
+        
                 return false;
             });
-        });
+        });        
     </script>
 </body>
 </html>
