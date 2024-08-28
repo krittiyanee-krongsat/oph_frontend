@@ -12,12 +12,13 @@
     <button id="submitButton" disabled>Submit</button>
 
     <script> 
-        //var apiUrl = "http://localhost:5000/";
-        var apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
+        var apiUrl = "http://localhost:5000/";
+        // var apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
 
         $(document).ready(function() {
             var questionsData = [];
             var selectedAnswers = {}; // สำหรับเก็บคำตอบที่เลือก
+            var loadedQuestionsIds = new Set(); // ใช้สำหรับตรวจสอบคำถามที่โหลดแล้ว
 
             // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
             for(let id = 1; id <= 5; id++){
@@ -26,7 +27,10 @@
                     method: 'GET',
                     dataType: 'json',
                     success: function(data) {
-                        if (!questionsData.some(q => q.question_list.some(qItem => qItem.qa_id === data.question_list[0].qa_id))) {
+                        var questionIds = data.question_list.map(q => q.qa_id);
+                        var newQuestions = data.question_list.filter(q => !loadedQuestionsIds.has(q.qa_id));
+                        if (newQuestions.length > 0) {
+                            loadedQuestionsIds = new Set([...loadedQuestionsIds, ...questionIds]);
                             questionsData.push(data);
                         }
                         if (questionsData.length === 5) {
@@ -107,7 +111,9 @@
                         selectedAnswers[questionId] = [];
                     }
                     // เก็บคำตอบที่เลือก
-                    selectedAnswers[questionId].push(selectedAnswer);
+                    if (!selectedAnswers[questionId].includes(selectedAnswer)) {
+                        selectedAnswers[questionId].push(selectedAnswer);
+                    }
                 } else {
                     // ลบคำตอบที่ไม่ได้เลือกอีกต่อไป
                     var index = selectedAnswers[questionId].indexOf(selectedAnswer);
@@ -163,6 +169,7 @@
     </script>
 </body>
 </html>
+
 
 
 
