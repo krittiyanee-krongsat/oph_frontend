@@ -99,7 +99,7 @@
                 var questionId = $(this).closest('div').find('span').attr('data-id');
                 var selectedAnswer = $(this).val();
 
-                /*// ตรวจสอบชนิดของการเลือก
+                // ตรวจสอบชนิดของการเลือก
                 if ($(this).is(':checked')) {
                     if (!selectedAnswers[questionId]) {
                         selectedAnswers[questionId] = [];
@@ -112,7 +112,7 @@
                     if (index > -1) {
                         selectedAnswers[questionId].splice(index, 1);
                     }
-                }*/
+                }
 
                 validateAnswers();
             });
