@@ -84,13 +84,13 @@ const goBackStatus = () => {
 //*Degree*//
 const setDegree = () => {
   var choice3 = document.getElementById("Voc").checked
-  if (choice3) {
+  //if (choice3) {
   localStorage.setItem('degree', document.querySelector('input[name="value-degree"]:checked').value);
   location.replace("5_1_FosVoc.html");
-  } else {
+  /*} else {
   localStorage.setItem('degree', document.querySelector('input[name="value-degree"]:checked').value);
   location.replace("6_Fos.html");
-  }
+  }*/
 }
 
 const goBackDegree = () => {
@@ -110,7 +110,8 @@ const goBackFos = () => {
 
 //*Province*//
 const setProvince = () => {
-    location.replace("../StudentPage/1_SDeepsea.html");
+    //location.replace("../StudentPage/1_SDeepsea.html");
+    ModelPageNext();
 }
 
 const goBackProvince = () => {
@@ -120,7 +121,8 @@ location.replace("6_Fos.html");
 //*Faculty*//
 const setFaculty = () => {
   localStorage.setItem('faculty', document.getElementById('txtFaculty').value);
-    location.replace("../StudentPage/1_SDeepsea.html");
+    //location.replace("../StudentPage/1_SDeepsea.html");
+    location.replace("../infoPage/5_Degree.html");
 }
 
 const goBackFaculty = () => {
@@ -129,7 +131,7 @@ location.replace("../infoPage/4_Status.html");
 
 //*Fosvoc*//
 const setFosvoc = () => {
-  localStorage.setItem('fosvoc', document.getElementById('txtFosvoc').value);
+  localStorage.setItem('fos', document.getElementById('txtFosvoc').value);
     location.replace("../StudentPage/1_SDeepsea.html");
 }
 
