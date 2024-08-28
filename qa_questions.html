@@ -147,6 +147,7 @@
                     data: JSON.stringify(formatJson),
                     success: function(response) {
                         console.log(response);
+                        console.log("Question Data:", data);
                         alert('Success');
                     },
                     error: function(xhr, status, error) {
