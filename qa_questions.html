@@ -11,16 +11,18 @@
     <div id="questions"></div><br/><br/>
     <button id="submitButton" disabled>Submit</button>
 
-    <script>
-        const apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
-        const questionsData = [];
-        const selectedAnswers = {}; // สำหรับเก็บคำตอบที่เลือก
+    <script> 
+        //var apiUrl = "http://localhost:5000/";
+        var apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
 
         $(document).ready(function() {
+            var questionsData = [];
+            var selectedAnswers = {}; // สำหรับเก็บคำตอบที่เลือก
+
             // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
-            for (let id = 1; id <= 5; id++) {
+            for(let id = 1; id <= 5; id++){
                 $.ajax({
-                    url: `${apiUrl}qa_question/${id}`,
+                    url: apiUrl + "qa_question/" + id,
                     method: 'GET',
                     dataType: 'json',
                     success: function(data) {
@@ -34,42 +36,37 @@
                     }
                 });
             }
-
-            let questionsLoaded = false;
-
+        
             function displayQuestions() {
-                if (questionsLoaded) return;
-                questionsLoaded = true;
-
-                const $questions = $("<div></div>");
-
-                questionsData.forEach(questionData => {
-                    const questionList = questionData.question_list;
-                    const answers = questionData.answers_list[0];
-
-                    questionList.forEach(questionItem => {
-                        const $questionContainer = $('<div></div>');
-
+                var $questions = $("<div></div>");
+        
+                $.each(questionsData, function(index, questionData) {
+                    var questionList = questionData.question_list;
+                    var answers = questionData.answers_list[0];
+        
+                    $.each(questionList, function(index, questionItem) {
+                        var $questionContainer = $('<div></div>');
+                        
                         // แสดงข้อความคำถาม
                         $questionContainer.append(
                             $('<span></span>').attr('data-id', questionItem.qa_id).text(questionItem.q_student)
                         );
-
+        
                         // กำหนดประเภทของการป้อนข้อมูลเป็น checkbox หรือ radio
-                        const inputType = (questionItem.qa_id === 1 || questionItem.qa_id === 5) ? 'checkbox' : 'radio';
-
-                        answers.forEach(answerItem => {
-                            const $label = $('<label></label>');
-                            const $input = $(`<input type="${inputType}" name="answer${questionItem.qa_id}">`).val(answerItem.ans_id);
-
+                        var inputType = (questionItem.qa_id === 1 || questionItem.qa_id === 5) ? 'checkbox' : 'radio';
+                        
+                        $.each(answers, function(index, answerItem) {
+                            var $label = $('<label></label>');
+                            var $input = $('<input type="' + inputType + '" name="answer' + questionItem.qa_id + '">').val(answerItem.ans_id);
+        
                             $label.append($input).append(answerItem.answer);
                             $questionContainer.append('<br>').append($label);
                         });
-
+        
                         $questions.append($questionContainer).append('<br>');
                     });
                 });
-
+        
                 $('#questions').html($questions);
                 enableSubmitButton(); // เรียกฟังก์ชันเพื่อกำหนดสถานะเริ่มต้นของปุ่มส่ง
             }
@@ -80,13 +77,13 @@
             }
 
             function validateAnswers() {
-                let valid = true;
+                var valid = true;
 
                 // ตรวจสอบความถูกต้องของคำตอบสำหรับคำถามประเภท checkbox
                 $('input[type="checkbox"]').each(function() {
-                    const questionId = $(this).attr('name').replace('answer', '');
-                    const selectedCount = $(`input[name="answer${questionId}"]:checked`).length;
-
+                    var questionId = $(this).attr('name').replace('answer', '');
+                    var selectedCount = $('input[name="answer' + questionId + '"]:checked').length;
+                    
                     // ถ้าคำถามเป็นประเภท 1 หรือ 5 ต้องเลือกไม่เกิน 3 ตัวเลือก
                     if ((questionId === '1' || questionId === '5') && selectedCount > 3) {
                         valid = false;
@@ -97,19 +94,21 @@
                 $('#submitButton').prop('disabled', !valid);
             }
 
+            // ฟังก์ชันสำหรับเปลี่ยนแปลงค่าใน checkbox หรือ radio button
             $('#questions').on('change', 'input[type="checkbox"], input[type="radio"]', function() {
-                const questionId = $(this).closest('div').find('span').attr('data-id');
-                const selectedAnswer = $(this).val();
+                var questionId = $(this).closest('div').find('span').attr('data-id');
+                var selectedAnswer = $(this).val();
 
+                // ตรวจสอบชนิดของการเลือก
                 if ($(this).is(':checked')) {
                     if (!selectedAnswers[questionId]) {
                         selectedAnswers[questionId] = [];
                     }
-                    if (!selectedAnswers[questionId].includes(selectedAnswer)) {
-                        selectedAnswers[questionId].push(selectedAnswer);
-                    }
+                    // เก็บคำตอบที่เลือก
+                    selectedAnswers[questionId].push(selectedAnswer);
                 } else {
-                    const index = selectedAnswers[questionId].indexOf(selectedAnswer);
+                    // ลบคำตอบที่ไม่ได้เลือกอีกต่อไป
+                    var index = selectedAnswers[questionId].indexOf(selectedAnswer);
                     if (index > -1) {
                         selectedAnswers[questionId].splice(index, 1);
                     }
@@ -119,29 +118,29 @@
             });
 
             $('#submitButton').click(function() {
-                const qaArray = [];
+                var qa_array = [];
 
-                Object.keys(selectedAnswers).forEach(questionId => {
-                    const answers = selectedAnswers[questionId];
+                $.each(selectedAnswers, function(questionId, answers) {
                     if (answers.length > 0) {
-                        const qaAnswers = {
+                        var qa_answers = {
                             'qa_id': questionId,
                             'ans_id': answers
                         };
-
-                        qaArray.push(qaAnswers);
+                        
+                        qa_array.push(qa_answers);
                     }
                 });
 
-                const formatJson = {
+                var formatJson = {
                     "user_id": 1,
-                    "ans_list": qaArray
+                    "ans_list": qa_array
                 };
 
                 console.log(JSON.stringify(formatJson));
 
+                // ส่งข้อมูลคำตอบไปยังเซิร์ฟเวอร์
                 $.ajax({
-                    url: `${apiUrl}qa_transaction`,
+                    url: apiUrl + 'qa_transaction',
                     method: 'POST',
                     dataType: 'json',
                     contentType: 'application/json',
