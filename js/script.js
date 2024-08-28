@@ -69,7 +69,7 @@ const setStatus = () => {
     localStorage.setItem('status', document.querySelector('input[name="value-status"]:checked').value);
     location.replace("5_Degree.html");
   } else if (choice2) {
-    localStorage.setItem('status', document.querySelector('input[name="value-Undergraduete"]:checked').value);
+    localStorage.setItem('status', document.querySelector('input[name="value-status"]:checked').value);
     location.replace("4_1_Faculty.html");
   } else {
     localStorage.setItem('status', document.querySelector('input[name="value-status"]:checked').value);
