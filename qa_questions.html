@@ -98,8 +98,8 @@
             }
 
             $('#questions').on('change', 'input[type="checkbox"], input[type="radio"]', function() {
-                const questionId = $(this).closest('div').find('span').attr('data-id');
-                const selectedAnswer = $(this).val();
+                var questionId = $(this).attr('name').replace('answer', '');
+                var selectedAnswer = $('input[name="answer' + questionId + '"]:checked').length;
 
                 if ($(this).is(':checked')) {
                     if (!selectedAnswers[questionId]) {
