@@ -11,18 +11,16 @@
     <div id="questions"></div><br/><br/>
     <button id="submitButton" disabled>Submit</button>
 
-    <script> 
-        //var apiUrl = "http://localhost:5000/";
-        var apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
+    <script>
+        const apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
+        const questionsData = [];
+        const selectedAnswers = {}; // สำหรับเก็บคำตอบที่เลือก
 
         $(document).ready(function() {
-            var questionsData = [];
-            var selectedAnswers = {}; // สำหรับเก็บคำตอบที่เลือก
-
             // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
-            for(let id = 1; id <= 5; id++){
+            for (let id = 1; id <= 5; id++) {
                 $.ajax({
-                    url: apiUrl + "qa_question/" + id,
+                    url: `${apiUrl}qa_question/${id}`,
                     method: 'GET',
                     dataType: 'json',
                     success: function(data) {
@@ -36,47 +34,45 @@
                     }
                 });
             }
-        
-            var questionsLoaded = false;
+
+            let questionsLoaded = false;
 
             function displayQuestions() {
                 if (questionsLoaded) return;
                 questionsLoaded = true;
-            
-                var $questions = $("<div></div>");
-                
-                $.each(questionsData, function(index, questionData) {
-                    var questionList = questionData.question_list;
-                    var answers = questionData.answers_list[0];
-            
-                    $.each(questionList, function(index, questionItem) {
-                        var $questionContainer = $('<div></div>');
-                        
+
+                const $questions = $("<div></div>");
+
+                questionsData.forEach(questionData => {
+                    const questionList = questionData.question_list;
+                    const answers = questionData.answers_list[0];
+
+                    questionList.forEach(questionItem => {
+                        const $questionContainer = $('<div></div>');
+
                         // แสดงข้อความคำถาม
                         $questionContainer.append(
                             $('<span></span>').attr('data-id', questionItem.qa_id).text(questionItem.q_student)
                         );
-            
+
                         // กำหนดประเภทของการป้อนข้อมูลเป็น checkbox หรือ radio
-                        var inputType = (questionItem.qa_id === 1 || questionItem.qa_id === 5) ? 'checkbox' : 'radio';
-                        
-                        $.each(answers, function(index, answerItem) {
-                            var $label = $('<label></label>');
-                            var $input = $('<input type="' + inputType + '" name="answer' + questionItem.qa_id + '">').val(answerItem.ans_id);
-            
+                        const inputType = (questionItem.qa_id === 1 || questionItem.qa_id === 5) ? 'checkbox' : 'radio';
+
+                        answers.forEach(answerItem => {
+                            const $label = $('<label></label>');
+                            const $input = $(`<input type="${inputType}" name="answer${questionItem.qa_id}">`).val(answerItem.ans_id);
+
                             $label.append($input).append(answerItem.answer);
                             $questionContainer.append('<br>').append($label);
                         });
-            
+
                         $questions.append($questionContainer).append('<br>');
                     });
                 });
-            
+
                 $('#questions').html($questions);
                 enableSubmitButton(); // เรียกฟังก์ชันเพื่อกำหนดสถานะเริ่มต้นของปุ่มส่ง
             }
-            
-
 
             function enableSubmitButton() {
                 $('#submitButton').prop('disabled', false);
@@ -84,29 +80,27 @@
             }
 
             function validateAnswers() {
-                var valid = true;
-            
+                let valid = true;
+
                 // ตรวจสอบความถูกต้องของคำตอบสำหรับคำถามประเภท checkbox
                 $('input[type="checkbox"]').each(function() {
-                    var questionId = $(this).attr('name').replace('answer', '');
-                    var selectedCount = $('input[name="answer' + questionId + '"]:checked').length;
-                    
+                    const questionId = $(this).attr('name').replace('answer', '');
+                    const selectedCount = $(`input[name="answer${questionId}"]:checked`).length;
+
                     // ถ้าคำถามเป็นประเภท 1 หรือ 5 ต้องเลือกไม่เกิน 3 ตัวเลือก
                     if ((questionId === '1' || questionId === '5') && selectedCount > 3) {
                         valid = false;
                         return false; // ออกจากลูป
                     }
                 });
-            
+
                 $('#submitButton').prop('disabled', !valid);
             }
-            
-            
 
             $('#questions').on('change', 'input[type="checkbox"], input[type="radio"]', function() {
-                var questionId = $(this).closest('div').find('span').attr('data-id');
-                var selectedAnswer = $(this).val();
-            
+                const questionId = $(this).closest('div').find('span').attr('data-id');
+                const selectedAnswer = $(this).val();
+
                 if ($(this).is(':checked')) {
                     if (!selectedAnswers[questionId]) {
                         selectedAnswers[questionId] = [];
@@ -115,38 +109,39 @@
                         selectedAnswers[questionId].push(selectedAnswer);
                     }
                 } else {
-                    var index = selectedAnswers[questionId].indexOf(selectedAnswer);
+                    const index = selectedAnswers[questionId].indexOf(selectedAnswer);
                     if (index > -1) {
                         selectedAnswers[questionId].splice(index, 1);
                     }
                 }
-            
+
                 validateAnswers();
             });
-            
+
             $('#submitButton').click(function() {
-                var qa_array = [];
-            
-                $.each(selectedAnswers, function(questionId, answers) {
+                const qaArray = [];
+
+                Object.keys(selectedAnswers).forEach(questionId => {
+                    const answers = selectedAnswers[questionId];
                     if (answers.length > 0) {
-                        var qa_answers = {
+                        const qaAnswers = {
                             'qa_id': questionId,
                             'ans_id': answers
                         };
-            
-                        qa_array.push(qa_answers);
+
+                        qaArray.push(qaAnswers);
                     }
                 });
-            
-                var formatJson = {
+
+                const formatJson = {
                     "user_id": 1,
-                    "ans_list": qa_array
+                    "ans_list": qaArray
                 };
-            
+
                 console.log(JSON.stringify(formatJson));
-            
+
                 $.ajax({
-                    url: apiUrl + 'qa_transaction',
+                    url: `${apiUrl}qa_transaction`,
                     method: 'POST',
                     dataType: 'json',
                     contentType: 'application/json',
@@ -160,10 +155,9 @@
                         alert('Error');
                     }
                 });
-            
+
                 return false;
             });
-            
         });
     </script>
 </body>
