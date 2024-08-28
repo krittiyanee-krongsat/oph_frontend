@@ -72,36 +72,7 @@
                         });
                 
                         $('#questions').html($questions);
-                        enableSubmitButton(); // เรียกฟังก์ชันเพื่อกำหนดสถานะเริ่มต้นของปุ่มส่ง
                     }
-
-                    function enableSubmitButton() {
-                        $('#submitButton').prop('disabled', false);
-                        validateAnswers(); // ตรวจสอบความถูกต้องของคำตอบเบื้องต้น
-                    }
-
-                    function validateAnswers() {
-                        var valid = true;
-
-                        // ตรวจสอบความถูกต้องของคำตอบสำหรับคำถามประเภท checkbox
-                        $('input[type="checkbox"]').each(function() {
-                            var questionId = $(this).attr('name').replace('answer', '');
-                            var selectedCount = $('input[name="answer' + questionId + '"]:checked').length;
-                            
-                            // ถ้าคำถามเป็นประเภท 1 หรือ 5 ต้องเลือกไม่เกิน 3 ตัวเลือก
-                            if ((questionId === '1' || questionId === '5') && selectedCount > 3) {
-                                valid = false;
-                                return false; // ออกจากลูป
-                            }
-                        });
-
-                        $('#submitButton').prop('disabled', !valid);
-                    }
-
-                    // ฟังก์ชันสำหรับเปลี่ยนแปลงค่าใน checkbox หรือ radio button
-                    $('#questions').on('change', 'input[type="checkbox"], input[type="radio"]', function() {
-                        validateAnswers();
-                    });
 
                     $('#submitButton').click(function() {
                         var qa_array = [];
