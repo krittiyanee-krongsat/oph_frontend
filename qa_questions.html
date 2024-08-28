@@ -41,15 +41,15 @@
                 var $questions = $("<div></div>");
         
                 $.each(questionsData, function(index, questionData) {
-                    var questionList = questionData.question_list;
+                    var question_list = questionData.question_list;
                     var answers = questionData.answers_list[0];
         
-                    $.each(questionList, function(index, questionItem) {
+                    $.each(question_list, function(index, questionItem) {
                         var $questionContainer = $('<div></div>');
                         
                         // แสดงข้อความคำถาม
                         $questionContainer.append(
-                            $('<span></span>').attr('data-id', questionItem.qa_id).text(questionItem.q_student)
+                            $('<span></span>').val(questionItem.qa_id).text(questionItem.q_student)
                         );
         
                         // กำหนดประเภทของการป้อนข้อมูลเป็น checkbox หรือ radio
