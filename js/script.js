@@ -425,7 +425,7 @@ const ModelPageNext = () => {
   }
   
   $.ajax({
-    url: 'http://localhost:5000/register_user',
+    url: 'https://deepseaoph2024.bu.ac.th/api/register_user',
     method: 'POST',
     dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
     data: data
@@ -434,7 +434,7 @@ const ModelPageNext = () => {
     alert('success');
 })
 $.ajax({
-  url: 'http://localhost:5000/result_max/8',
+  url: 'https://deepseaoph2024.bu.ac.th/api/result_max/8',
   method: 'GET',
   dataType: 'json'
 }).done(function (response) {
