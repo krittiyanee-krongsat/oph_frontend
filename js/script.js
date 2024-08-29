@@ -1,3 +1,5 @@
+var apiUrl = 'https://deepseaoph2024.bu.ac.th/api/'
+
 
 //*Email Right here//
 let isValidate = true;
@@ -43,10 +45,10 @@ $('#txtEmail').on('input', validate);
 const setAge = () => {
     localStorage.setItem('age', document.querySelector('input[name="value-radio"]:checked').value);
     location.replace("3_Gender.html");
+    
 }
 
 const goBack = () => {
-  window.history.back();
   location.replace("1_Home.html");
 };
 
@@ -57,8 +59,7 @@ const setGender = () => {
 }
 
 const goBackGender = () => {
-  window.history.back();
-  location.replace("2_Age.html");
+  location.replace("../infoPage/2_Age.html");
 };
 
 //*Status*//
@@ -79,7 +80,6 @@ const setStatus = () => {
 }
 
 const goBackStatus = () => {
-  window.history.back();
   location.replace("3_Gender.html");
 };
 
@@ -96,30 +96,26 @@ const setDegree = () => {
 }
 
 const goBackDegree = () => {
-  window.history.back();
   location.replace("4_Status.html");
 };
 
 //*Field Of Study*//
 const setFos = () => {
-  localStorage.setItem('fos', document.querySelector('input[name="value-fos"]:checked').value);
+  localStorage.setItem('fos', document.getElementById('txtFos').value);
   location.replace("7_Province.html");
 }
 
 const goBackFos = () => {
-  window.history.back();
   location.replace("5_Degree.html");
 };
 
 
 //*Province*//
 const setProvince = () => {
-  localStorage.setItem('province', document.getElementById('txtProvince').value);
     location.replace("../StudentPage/1_SDeepsea.html");
 }
 
 const goBackProvince = () => {
-window.history.back();
 location.replace("6_Fos.html");
 };
 
@@ -130,26 +126,45 @@ const setFaculty = () => {
 }
 
 const goBackFaculty = () => {
-window.history.back();
-location.replace("4_Status.html");
+location.replace("../infoPage/4_Status.html");
 };
 
 //*Fosvoc*//
 const setFosvoc = () => {
   localStorage.setItem('fosvoc', document.getElementById('txtFosvoc').value);
-    location.replace("8_Age.html");
+    location.replace("../StudentPage/1_SDeepsea.html");
 }
 
 const goBackFosvoc = () => {
-window.history.back();
-location.replace("5_Degree.html");
+location.replace("../infoPage/5_Degree.html");
 };
 
 //-------------------------------InfoPage--------------------------//
 
-const DeepSeaNext = () => {
-  location.replace("2_Page1.html")
-}
+
+
+  // try {
+  //   const response = await fetch('http://localhost:5000/register_user', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(data)
+  //   });
+
+  //   if (!response.ok) {
+  //     throw new Error('Network response was not ok');
+  //   }
+
+  //   const myJson = await response.json(); // extract JSON from the http response
+
+  //   // do something with myJson
+  //   console.log(myJson);
+  // } catch (error) {
+  //   console.error('There was a problem with the fetch operation:', error);
+  // }
+
+
 
 document.addEventListener('DOMContentLoaded', (event) => {
   const checkboxes = document.querySelectorAll('#page1Options input[type="checkbox"]');
@@ -183,12 +198,11 @@ function saveSelections() {
           selectedOptions.push(checkbox.value);
       }
   });
-  localStorage.setItem('selectedOptions', JSON.stringify(selectedOptions));
+  localStorage.setItem('selectedOptions_page1', JSON.stringify(selectedOptions));
   location.replace('../VisitorPage/3_Page2.html')
 }
 
 const goBackPageDSP1 = () => {
-  window.history.back();
   location.replace("../VisitorPage/1_VDeepsea.html");
   };
 
@@ -221,18 +235,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 function saveSelectionPage2() {
-  const checkbox2 = document.querySelector('#page2Options input[type="checkbox"]:checked');
-  if (checkbox2) {
-      localStorage.setItem('selectedOption_page2', checkbox2.value);
-      location.replace('4_Page3.html');
+  var selectedIds = [];
+  $('#checkbox-containerV2 input[type=checkbox]:checked').each(function() {
+      selectedIds.push($(this).val()); // Collect selected checkbox values
+  });
+
+  // Ensure exactly one option is selected
+  if (selectedIds.length === 1) {
+      localStorage.setItem('selectedOptions_page2', JSON.stringify(selectedIds));
+      console.log('Selections saved for PageV 2:', selectedIds);
+      location.replace('../VisitorPage/4_Page3.html')
   } else {
-      alert('Please select an option.');
+      alert('Please select exactly 1 option.');
   }
 }
 
 
   const goBackPageDSP2 = () => {
-    window.history.back();
     location.replace("../VisitorPage/2_Page1.html");
   };
 
@@ -265,17 +284,22 @@ function saveSelectionPage2() {
   });
   
   function saveSelectionPage3() {
-    const checkbox3 = document.querySelector('#page3Options input[type="checkbox"]:checked');
-    if (checkbox3) {
-        localStorage.setItem('selectedOption_page3', checkbox3.value);
-        location.replace("../VisitorPage/5_Page4.html")
+    var selectedIds = [];
+    $('#checkbox-containerV3 input[type=checkbox]:checked').each(function() {
+        selectedIds.push($(this).val()); // Collect selected checkbox values
+    });
+  
+    // Ensure exactly one option is selected
+    if (selectedIds.length === 1) {
+        localStorage.setItem('selectedOptions_page3', JSON.stringify(selectedIds));
+        console.log('Selections saved for PageV 3:', selectedIds);
+        location.replace('../VisitorPage/5_Page4.html')
     } else {
-        alert('Please select an option.');
+        alert('Please select exactly 1 option.');
     }
   }
 
   const goBackPageDSP3 = () => {
-    window.history.back();
     location.replace("../VisitorPage/3_Page2.html");
   };
 
@@ -308,19 +332,24 @@ function saveSelectionPage2() {
     });
     
     function saveSelectionPage4() {
-      const checkbox4 = document.querySelector('#page4Options input[type="checkbox"]:checked');
-      if (checkbox4) {
-          localStorage.setItem('selectedOption_page4', checkbox4.value);
-          location.replace("../VisitorPage/6_Page5.html")
+      var selectedIds = [];
+      $('#checkbox-containerV4 input[type=checkbox]:checked').each(function() {
+          selectedIds.push($(this).val()); // Collect selected checkbox values
+      });
+    
+      // Ensure exactly one option is selected
+      if (selectedIds.length === 1) {
+          localStorage.setItem('selectedOptions_page4', JSON.stringify(selectedIds));
+          console.log('Selections saved for PageV 4:', selectedIds);
+          location.replace('../VisitorPage/6_Page5.html')
       } else {
-          alert('Please select an option.');
+          alert('Please select exactly 1 option.');
       }
     }
-  
+
     const goBackPageDSP4 = () => {
-      window.history.back();
       location.replace("../VisitorPage/4_Page3.html");
-    };
+      };
 
 
   
@@ -356,25 +385,138 @@ function saveSelectionPage2() {
               selectedOptions5.push(checkbox5.value);
           }
       });
-      localStorage.setItem('selectedOptions5', JSON.stringify(selectedOptions5));
+      localStorage.setItem('selectedOptions_page5', JSON.stringify(selectedOptions5));
       location.replace('../ReviewPage/1_ReviewHome.html')
     }
     
     const goBackPageDSP5 = () => {
-      window.history.back();
       location.replace("../VisitorPage/5_Page4.html");
       };
 
 /*Student Page*/
 
+
+
 const DeepSeaNextStudent = () => {
-  location.replace("../StudentPage/2_SPage1.html")
+  var register_id = $('#registerUser').val();
+  var email_name = localStorage.getItem('email')
+  var age_id = localStorage.getItem('age');
+  var gender_id = localStorage.getItem('gender');
+  var status_id = localStorage.getItem('status');
+  var degree_id = localStorage.getItem('degree');
+  var field_study_name1 = localStorage.getItem('fos');
+  var field_study_name2 = localStorage.getItem('fosvoc');
+  var field_study_name3 = localStorage.getItem('faculty');
+  var province_id = localStorage.getItem('province');
+
+  var field_study_name = field_study_name1 || field_study_name2 || field_study_name3
+
+  let data = {
+    register_id:register_id,
+    email_name: email_name,
+    age_id: age_id,
+    gender_id: gender_id,
+    status_id: status_id,
+    degree_id: degree_id,
+    field_study_name: field_study_name,
+    province_id: province_id,
+  }
+  
+  $.ajax({
+    url: apiUrl + 'register_user',
+    method: 'POST',
+    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
+    data: data
+}).always(function (response) {
+  console.log(response);
+  localStorage.setItem('user_id',response.user_id);
+  console.log(response.user_id);
+  location.replace('../StudentPage/2_SPage1.html')
+  alert('success');
+})
 }
 
-/*ReviewPage*/
+const DeepSeaNext = () => {
+  var register_id = $('#registerUser').val();
+  var email_name = localStorage.getItem('email')
+  var age_id = localStorage.getItem('age');
+  var gender_id = localStorage.getItem('gender');
+  var status_id = localStorage.getItem('status');
+  var degree_id = localStorage.getItem('degree');
+  var field_study_name1 = localStorage.getItem('fos');
+  var field_study_name2 = localStorage.getItem('fosvoc');
+  var field_study_name3 = localStorage.getItem('faculty');
+  var province_id = localStorage.getItem('province');
 
-const ReviewPageNext = () => {
-  location.replace("../ReviewPage/2_ReviewPage1.html")
+  var field_study_name = field_study_name1 || field_study_name2 || field_study_name3
+
+  let data = {
+    register_id:register_id,
+    email_name: email_name,
+    age_id: age_id,
+    gender_id: gender_id,
+    status_id: status_id,
+    degree_id: degree_id,
+    field_study_name: field_study_name,
+    province_id: province_id,
+  }
+  
+  $.ajax({
+    url: apiUrl + 'register_user',
+    method: 'POST',
+    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
+    data: data
+}).always(function (response) {
+  console.log(response);
+  localStorage.setItem('user_id',response.user_id);
+  console.log(response.user_id);
+  location.replace("../VisitorPage/2_Page1.html")
+  alert('success');
+})
+}
+
+const ModelPageNext = () => {
+var user_id = localStorage.getItem('user_id')
+$.ajax({
+  url: apiUrl + 'result_max/' + user_id,
+  method: 'GET',
+  dataType: 'json'
+}).done(function (response) {
+  console.log('GET response:', response);
+
+  if (Array.isArray(response) && response.length > 0) {
+    var program_id = response[0].program_id;
+    console.log('Received program_id:', program_id);
+
+  // Redirect based on program_id value
+  switch (program_id) {
+    case 1:
+      location.replace("../ModelPage/4_3ModelPageCom.html");
+      break;
+    case 2:
+      location.replace("../ModelPage/5_4ModelPageMulti.html");
+      break;
+    case 3:
+      location.replace("../ModelPage/3_2ModelPageElec.html");
+      break;
+    case 4:
+      location.replace("../ModelPage/2_1ModelPageAi.html");
+      break;
+    default:
+      console.error('Unexpected program_id value:', program_id);
+      alert('Invalid program_id. Redirecting to default page.');
+      location.replace("../ModelPage/1_ModelPageStart.html");
+  }
+} else {
+  console.error('program_id is not received or is invalid.');
+  alert('program_id is missing. Redirecting to default page.');
+  location.replace("../ModelPage/1_ModelPageStart.html");
+}
+}).fail(function (jqXHR, textStatus, errorThrown) {
+console.error('GET request failed:', textStatus, errorThrown);
+alert('Failed to retrieve program_id. Redirecting to default page.');
+location.replace("../ModelPage/1_ModelPageStart.html");
+});
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -414,7 +556,6 @@ function setReviewPage1() {
 }
 
 const goBackReview = () => {
-  window.history.back();
   location.replace("../ReviewPage/1_ReviewHome.html");
 };
 
@@ -455,7 +596,6 @@ function setReviewPage2() {
 }
 
 const goBackReview2 = () => {
-  window.history.back();
   location.replace("../ReviewPage/2_ReviewPage1.html");
 };
 
@@ -668,12 +808,12 @@ function saveSelectionPage_S1() {
       }
   });
   localStorage.setItem('selectedOptions_S1', JSON.stringify(selectedOptions_S1));
-  location.replace('../StudentPage/3_SPage2.html')
+  //location.replace('../StudentPage/3_SPage2.html')
 }
 
 const goBackPageDSP_S1  = () => {
   window.history.back();
-  location.replace("../VisitorPage/5_Page4.html");
+  location.replace("../StudentPage/1_SDeepsea.html");
   };
 
   /** Page 2 Student */
@@ -704,15 +844,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
   });
 });
   
-  function saveSelectionPage_S2() {
-    const checkbox_S2 = document.querySelector('#page2Options_S2 input[type="checkbox"]:checked');
-    if (checkbox_S2) {
-        localStorage.setItem('selectedOption_S2', checkbox_S2.value);
-        location.replace("../StudentPage/4_SPage3.html")
-    } else {
-        alert('Please select an option.');
-    }
+function saveSelectionPage_S2() {
+  var selectedIds = [];
+  $('#checkbox-containerS2 input[type=checkbox]:checked').each(function() {
+      selectedIds.push($(this).val()); // Collect selected checkbox values
+  });
+
+  // Ensure exactly one option is selected
+  if (selectedIds.length === 1) {
+      localStorage.setItem('selectedOptions_S2', JSON.stringify(selectedIds));
+      console.log('Selections saved for Page 2:', selectedIds);
+      location.replace('../StudentPage/4_SPage3.html')
+  } else {
+      alert('Please select exactly 1 option.');
   }
+}
+
+
   
   const goBackPageDSP_S2  = () => {
     window.history.back();
@@ -748,14 +896,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
   });
     
     function saveSelectionPage_S3() {
-      const checkbox_S3 = document.querySelector('#page3Options_S3 input[type="checkbox"]:checked');
-      if (checkbox_S3) {
-          localStorage.setItem('selectedOption_S3', checkbox_S3.value);
-          location.replace("../StudentPage/5_SPage4.html")
-      } else {
-          alert('Please select an option.');
-      }
-    }
+      var selectedIds = [];
+  $('#checkbox-containerS3 input[type=checkbox]:checked').each(function() {
+      selectedIds.push($(this).val()); // Collect selected checkbox values
+  });
+
+  // Ensure exactly one option is selected
+  if (selectedIds.length === 1) {
+      localStorage.setItem('selectedOptions_S3', JSON.stringify(selectedIds));
+      console.log('Selections saved for Page 3:', selectedIds);
+      location.replace('../StudentPage/5_SPage4.html')
+  } else {
+      alert('Please select exactly 1 option.');
+  }
+}
     
     const goBackPageDSP_S3  = () => {
       window.history.back();
@@ -791,12 +945,18 @@ checkboxes_S4.forEach(checkbox_S4 => {
 });
 
 function saveSelectionPage_S4() {
-  const checkbox_S4 = document.querySelector('#page4Options_S4 input[type="checkbox"]:checked');
-  if (checkbox_S4) {
-      localStorage.setItem('selectedOption_S4', checkbox_S4.value);
-      location.replace("../StudentPage/6_SPage5.html")
+  var selectedIds = [];
+  $('#checkbox-containerS4 input[type=checkbox]:checked').each(function() {
+      selectedIds.push($(this).val()); // Collect selected checkbox values
+  });
+
+  // Ensure exactly one option is selected
+  if (selectedIds.length === 1) {
+      localStorage.setItem('selectedOptions_S4', JSON.stringify(selectedIds));
+      console.log('Selections saved for Page 4:', selectedIds);
+      location.replace('../StudentPage/6_SPage5.html')
   } else {
-      alert('Please select an option.');
+      alert('Please select exactly 1 option.');
   }
 }
 
@@ -840,7 +1000,6 @@ function saveSelectionPage_S5() {
       }
   });
   localStorage.setItem('selectedOptions_S5', JSON.stringify(selectedOptions_S5));
-  location.replace('../StudentPage/7_SPage2.html')
 }
 
 const goBackPageDSP_S5  = () => {

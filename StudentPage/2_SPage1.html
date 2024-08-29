@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/script.js"></script>
 </head>
-<body>
+<body class="student_page">
     <section class="image">
         <div>
             <img src="../Img/Deep_sea.png" width="107px" height="21px">
@@ -24,19 +24,11 @@
         </div>
     </section>
     <section class="OptionSelect_S" id="page1Options_S">
-        <div class="check_quest_S">
-            <p><label><input id="option1_S" type="checkbox" name="question1_S" value="Programming & Coding"><span> Programming & Coding</span></label></p>
-            <p><label><input id="option2_S" type="checkbox" name="question1_S" value="Robotics & Automation"><span> Robotics & Automation</span></label></p>
-            <p><label><input id="option3_S" type="checkbox" name="question1_S" value="Sound Engineering"><span> Sound Engineering</span></label></p>
-            <p><label><input id="option4_S" type="checkbox" name="question1_S" value="Visual & Motion Graphic"><span> Visual & Motion Graphic</span></label></p>
-            <p><label><input id="option5_S" type="checkbox" name="question1_S" value="Renewable Energy"><span> Renewable Energy</span></label></p>
-            <p><label><input id="option6_S" type="checkbox" name="question1_S" value="Electrical"><span> Electrical</span></label></p>
-            <p><label><input id="option7_S" type="checkbox" name="question1_S" value="AI"><span> AI</span></label></p>
-            <p><label><input id="option8_S" type="checkbox" name="question1_S" value="Data Science"><span> Data Science</span></label></p>
+        <div id="checkbox-container" class="check_quest_S">
         </div>
     </section>
     <section class="next-button-pageDSP">
-        <button onclick="saveSelectionPage_S1()">
+        <button id="submit" onclick="saveSelectionPage_S1()">
             <span class="span-mother">
               <span>N</span>
               <span>e</span>
@@ -50,7 +42,7 @@
           </button>
     </section>
     <section class="back-button-pageDSP">
-      <button class="back" onclick="goBackPageDSP1_S()">
+      <button class="back" onclick="goBackPageDSP_S1()">
         <span class="span-mother">
           <span>B</span>
           <span>a</span>
@@ -62,4 +54,83 @@
             <span>k</span>
        </section>
 </body>
+<script>
+    $(document).ready(function() {
+    var selectedIds = []; // Array to keep track of selected options in order
+
+    // Fetch data and create checkboxes
+    $.ajax({
+        url: apiUrl + 'qa_answers',  // Your server-side script URL
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var container = $('#checkbox-container');
+            container.empty(); // Clear existing checkboxes
+
+            // Filter data to include only records with IDs 1 through 8
+            var filteredData = data.filter(function(item) {
+                return item.ans_id >= 1 && item.ans_id <= 8;
+            });
+
+            // Create checkboxes based on filtered data
+            $.each(filteredData, function(index, item) {
+                var uniqueClass = 'option-' + item.ans_id;
+                var checkbox = $('<input>', {
+                    type: 'checkbox',
+                    id: 'checkbox' + item.ans_id,
+                    value: item.ans_id + '-' + item.qa_id,
+                    class: uniqueClass
+                });
+
+                var span = $('<span>', {
+                    text: item.answer,
+                    class: uniqueClass
+                });
+
+                var label = $('<label>', {
+                    for: 'checkbox' + item.ans_id
+                }).append(checkbox).append(span);
+                
+                container.append(checkbox).append(label).append('<br>');
+            });
+
+            // Handle checkbox selection
+            $('input[type="checkbox"]').change(function() {
+                var value = $(this).val();
+
+                if ($(this).is(':checked')) {
+                    if (selectedIds.length < 3) {
+                        selectedIds.push(value); // Add the selected value in order
+                    } else {
+                        $(this).prop('checked', false); // Uncheck the last clicked checkbox
+                        alert('You can select up to 3 options only.');
+                    }
+                } else {
+                    // Remove the unchecked value from the array
+                    selectedIds = selectedIds.filter(function(id) {
+                        return id !== value;
+                    });
+                }
+
+                console.log('Selected checkbox IDs in order:', selectedIds);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', status, error);
+        }
+    });
+
+    // Handle the submit button click
+    $('#submit').click(function() {
+        if (selectedIds.length === 3) {
+            console.log('Selected checkbox IDs:', selectedIds);
+            // Store selected IDs in localStorage or perform other actions
+            location.replace('../StudentPage/3_SPage2.html');
+        } else {
+            alert('Please select exactly 3 options.');
+        }
+    });
+});
+
+</script>
 </html>

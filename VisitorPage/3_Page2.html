@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/script.js"></script>
 </head>
-<body>
+<body class="visitor_page">
     <section class="image">
         <div>
             <img src="../Img/Deep_sea.png" width="107px" height="21px">
@@ -16,16 +16,12 @@
     </section>
     <section class="page2DSP_V">
         <div class="content">
-            <h1>คุณคิดว่าบุตรหลานหรือผู้ที่อยู่ภายใต้การปก ครองของคุณมีความสนใจในหัวข้อใดมากที่ สุด?</h1>
+            <h1>คุณคิดว่าบุตรหลานหรือผู้ที่อยู่ภายใต้การปกครองของคุณมีความสนใจในหัวข้อใดมากที่สุด?</h1>
             <span>Which topic do you think your grandchildren or the people under your guardianship are most interested in?</span>
         </div>
     </section>
     <section class="OptionSelect_p2" id="page2Options">
-        <div class="check_quest_p2">
-            <p><label><input id="option1_page2" type="checkbox" name="question2" value="การผลิตและออกแบบระบบส่งจ่ายไฟฟ้า"><span>การผลิตและออกแบบระบบส่งจ่ายไฟฟ้า</span></label></p>
-            <p><label><input id="option2_page2" type="checkbox" name="question2" value="เทคโนโลยีที่ทันสมัย อำนวยความสะดวก และสร้างประโยชน์"><span>เทคโนโลยีที่ทันสมัย อำนวยความสะดวก และสร้างประโยชน์</span></label></p>
-            <p><label><input id="option3_page2" type="checkbox" name="question2" value="สร้างนวัตกรรม พัฒนางานมัลติมีเดียสื่อผสม"><span>สร้างนวัตกรรม พัฒนางานมัลติมีเดียสื่อผสม</span></label></p>
-            <p><label><input id="option4_page2" type="checkbox" name="question2" value="ประยุกต์ใช้งาน AI & Data Science มาเชื่อมโยงงานต่างๆ ได้"><span>ประยุกต์ใช้งาน AI & Data Science มาเชื่อมโยงงานต่างๆ ได้</span></label></p>
+        <div id="checkbox-containerV2" class="check_quest_p2">
         </div>
     </section>
     <section class="next-button-pageDSP">
@@ -54,6 +50,72 @@
             <span>O</span>
             <span>k</span>
        </section>
-
+       <script>
+        $(document).ready(function() {
+        $.ajax({
+            url: apiUrl + 'qa_answers',  // Your server-side script URL
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var container = $('#checkbox-containerV2');
+                container.empty(); // Clear existing checkboxes
+    
+                // Filter data to include only records with IDs 1 through 8
+                var filteredData = data.filter(function(item) {
+                    return item.ans_id >= 9 && item.ans_id <= 12;
+                });
+    
+                // Create checkboxes based on filtered data
+                $.each(filteredData, function(index, item) {
+                    // Assign a unique class based on ans_id
+                    var uniqueClass = 'option2-' + item.ans_id;
+                    var checkbox = $('<input>', {
+                        type: 'checkbox',
+                        id: 'checkbox' + item.ans_id,
+                        value: item.ans_id + '-' + item.qa_id,
+                        class: uniqueClass
+                    });
+    
+                    var span = $('<span>', {
+                        text: item.answer,
+                        class: uniqueClass
+                    });
+    
+                    var label = $('<label>', {
+                        for: 'checkbox' + item.ans_id
+                    }).append(checkbox).append(span); // Wrap checkbox and span inside label
+    
+                    container.append(label).append('<br>');
+                });
+    
+                // Allow only one checkbox to be selected at a time
+                $('#checkbox-containerV2').on('change', 'input[type="checkbox"]', function() {
+                    if ($(this).is(':checked')) {
+                        $('#checkbox-containerV2 input[type="checkbox"]').not(this).prop('checked', false); // Uncheck other checkboxes
+                    }
+                });
+    
+                $('#submit').click(function() {
+                    var selectedIds = [];
+                    $('#checkbox-containerV2 input[type=checkbox]:checked').each(function() {
+                        selectedIds.push($(this).val()); // Collect selected checkbox values
+                    });
+    
+                    // Check if exactly one option is selected
+                    if (selectedIds.length === 1) {
+                        console.log('Selected checkbox ID:', selectedIds[0]);
+                        // Store selected ID in localStorage or perform other actions
+                    } else {
+                        alert('Please select exactly 1 option.');
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching data:', status, error);
+            }
+        });
+    });
+    
+    </script>
 </body>
 </html>

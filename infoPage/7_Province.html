@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/script.js"></script>
 </head>
-<body>
+<body class="register_page">
     <section class="image">
         <div>
             <img src="../Img/Deep_sea.png" width="107px" height="21px">
@@ -20,9 +20,9 @@
             <span>Province</span>
         </div>
     </section>
-    <section class="inputBox">
-        <div>
-            <input type="text" id="txtProvince" placeholder="Please Enter Your Province">
+    <section class="dropdownBox">
+        <div class="custom-select">
+            <select id="dropdown"></select>
         </div>
     </section>
     <section class="next-button">
@@ -52,11 +52,41 @@
               <span>k</span>
          </section>
     <script>
-    $(document).ready(function() {
-    let province = localStorage.getItem('province')
-    if(province)
-    $("#txtProvince").val(province)
+$(document).ready(function() {
+    $.ajax({
+        url: apiUrl + 'register_province',  // Your server-side script URL
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var dropdown = $('#dropdown');
+            dropdown.empty(); // Clear existing options
+            $.each(data, function(index, item) {
+                dropdown.append($('<option>', {
+                    value: item.province_id,
+                    text: item.province_name
+                }));
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', status, error);
+        }
     });
+
+    // Handle dropdown selection
+    $('#dropdown').change(function() {
+        var selectedId = $(this).val();  // Get selected value
+        if (selectedId) {
+            localStorage.setItem('province', selectedId);  // Store in local storage
+            console.log('Province ID saved to local storage:', selectedId);
+        } else {
+            console.log('No province selected');
+        }
+    });
+});
+        var storedId = localStorage.getItem('province');
+            if (storedId) {
+                $('#dropdown').val(storedId);  // Set the dropdown to the stored value
+            }
     </script>
 </body>
 </html>

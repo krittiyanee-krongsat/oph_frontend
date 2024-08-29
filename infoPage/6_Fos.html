@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/script.js"></script>
 </head>
-<body>
+<body class="register_page">
     <section class="image">
         <div>
             <img src="../Img/Deep_sea.png" width="107px" height="21px">
@@ -20,30 +20,8 @@
             <span>Field Of Study</span>
         </div>
     </section>
-    <section class="inputSelect">
-        <div class="radio-input-fos">
-            <label class="label">
-              <input type="radio" id="value-1" checked="" name="value-fos" value="English - Social Studies" />
-              <p class="text">ไทย-สังคม / English - Social Studies</p>
-            </label>
-            <label class="label">
-              <input type="radio" id="value-2" name="value-fos" value="Arts - Languages" />
-              <p class="text">ศิลป์-ภาษา / Arts - Languages</p>
-            </label>
-            <label class="label">
-              <input type="radio" id="value-3" name="value-fos" value="Science - Mathematics" />
-              <p class="text">วิทย์-คณิต / Science - Mathematics</p>
-            </label>
-            <label class="label">
-              <input type="radio" id="value-4" name="value-fos" value="English - Mathematics" />
-              <p class="text">ศิลป์-คำนวน / English - Mathematics</p>
-            </label>
-            <label class="label">
-              <input type="radio" id="value-5" name="value-fos" value="Other" />
-              <p class="text">อื่นๆ / Other</p>
-            </label>
-          </div>
-          
+    <section class="inputBox">
+      <input type="text" id="txtFos" placeholder="Please Enter Your Field Of Study">
     </section>
     <section class="next-button">
         <button onclick="setFos()">
@@ -73,13 +51,10 @@
        </section>
        <script>
         $(document).ready(function() {
-          let fos = localStorage.getItem('fos');
-          console.log("Retrieved fos from localStorage: ", fos);
-          if (fos) {
-            $(`input[name="value-fos"][value="${fos}"]`).prop('checked', true);
-            console.log(`Setting radio button with value: ${fos} as checked`);
-          }
-        });
+    let fos = localStorage.getItem('fos')
+    if(fos)
+    $("#txtFos").val(fos)
+    });
         </script>
 </body>
 </html>

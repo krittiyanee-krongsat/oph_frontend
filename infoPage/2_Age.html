@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/script.js"></script>
 </head>
-<body>
+<body class="register_page">
     <section class="image">
         <div>
             <img src="../Img/Deep_sea.png" width="107px" height="21px">
@@ -23,19 +23,19 @@
     <section class="inputSelect">
         <div class="radio-input">
             <label class="label">
-              <input type="radio" id="value-1" checked="" name="value-radio" value="10-20" />
+              <input type="radio" id="1" checked="" name="value-radio" value="1" />
               <p class="text">10-20 ปี</p>
             </label>
             <label class="label">
-              <input type="radio" id="value-2" name="value-radio" value="21-30" />
+              <input type="radio" id="2" name="value-radio" value="2" />
               <p class="text">21-30 ปี</p>
             </label>
             <label class="label">
-              <input type="radio" id="value-3" name="value-radio" value="31-40" />
+              <input type="radio" id="3" name="value-radio" value="3" />
               <p class="text">31-40 ปี</p>
             </label>
             <label class="label">
-                <input type="radio" id="value-4" name="value-radio" value="40^" />
+                <input type="radio" id="4" name="value-radio" value="4" />
                 <p class="text">40 ปีขึ้นไป</p>
               </label>
           </div>
@@ -69,13 +69,17 @@
        </section>
     <script>
       $(document).ready(function() {
+        let email = localStorage.getItem("email");
         let age = localStorage.getItem('age');
         console.log("Retrieved age from localStorage: ", age);
         if (age) {
           $(`input[name="value-radio"][value="${age}"]`).prop('checked', true);
           console.log(`Setting radio button with value: ${age} as checked`);
+          console.log('your email is' ,email)
         }
       });
+      
+      
       </script>
 </body>
 </html>

@@ -14,6 +14,18 @@ body {
     background-color: black;
 }
 
+.register_page {
+  background-image: url(../Img/register_bg.jpg);
+}
+
+.student_page {
+  background-image: url(../Img/student_bg.jpg);
+}
+
+.visitor_page {
+  background-image: url(../Img/visitor_bg.jpg);
+}
+
 section {
     display: block;
     overflow-x: hidden;
@@ -221,6 +233,29 @@ section {
   font-size: 2rem;
   padding-bottom: .5rem;
   
+}
+
+.dropdownBox {
+  padding: 2rem;
+  height: 200px;
+  width: 400px;
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -200px;
+  text-align: center;
+  align-items: center;
+}
+
+.custom-select select{
+  width: 70%;
+  border: 4px solid transparent;
+  outline: none;
+  overflow: hidden;
+  background-color: #F3F3F3;
+  border-radius: 15px;
+  padding: 5px;
 }
 
 .faculty {
@@ -478,7 +513,7 @@ section {
 }
   
 .radio-input .label:has(input:checked)::before {
-    background-color: #2d3750;
+    background-color: #2d3750ad;
     border-color: #00A9B4;
     height: 50px;
 }
@@ -570,7 +605,7 @@ section {
 }
   
 .radio-input-degree .label:has(input:checked)::before {
-    background-color: #2d3750;
+    background-color: #2d3750ad;
     border-color: #00A9B4;
     height: 50px;
 }
@@ -620,85 +655,7 @@ section {
     }
 }
 
-.radio-input-fos {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
 
-.radio-input-fos * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-.radio-input-fos label {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 0px 20px;
-  width: 370px;
-  cursor: pointer;
-  height: 50px;
-  position: relative;
-}
-
-.radio-input-fos label::before {
-  position: absolute;
-  content: "";
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 370px;
-  height: 45px;
-  z-index: -1;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  border-radius: 10px;
-  border: 2px solid transparent;
-}
-.radio-input-fos label:hover::before {
-  transition: all 0.2s ease;
-  background-color: #2a2e3c;
-}
-
-.radio-input-fos .label:has(input:checked)::before {
-  background-color: #2d3750;
-  border-color: #00A9B4;
-  height: 50px;
-}
-.radio-input-fos .label .text {
-  color: #fff;
-}
-
-.radio-input-fos .label input[type="radio"] {
-  background-color: #202030;
-  appearance: none;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.radio-input-fos .label input[type="radio"]:checked {
-  background-color: #00A9B4;
-  -webkit-animation: puls 0.7s forwards;
-  animation: pulse 0.7s forwards;
-}
-
-.radio-input-fos .label input[type="radio"]:before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  transition: all 0.1s cubic-bezier(0.165, 0.84, 0.44, 1);
-  background-color: #fff;
-  transform: scale(0);
-}
-
-.radio-input-fos .label input[type="radio"]:checked::before {
-  transform: scale(1);
-}
 
 @keyframes pulse {
   0% {
@@ -1014,7 +971,7 @@ section {
   height: 500px;
   width: 400px;
   position: fixed;
-  top: 47%;
+  top: 43%;
   left: 50%;
   margin-top: -100px;
   margin-left: -200px;
@@ -1040,7 +997,7 @@ section {
   color: rgb(0, 0, 0);
 }
 
-.check_quest input[type="checkbox"]:checked + span {
+.check_quest input[type="checkbox"]:checked + label > span {
   background-color: #00A9B4;
   color: black;
 }
@@ -1060,11 +1017,12 @@ section {
 
 .check_quest_p2 span {
   display: inline-block;
-  padding: 10px;
+  padding: 14px;
   width: 350px;
   background-color: #b2b2b2;
   border-radius: 40px;
   color: rgb(0, 0, 0);
+  margin-bottom: 8px;
 }
 
 .check_quest_p2 input[type="checkbox"]:checked + span {
@@ -1087,11 +1045,12 @@ section {
 
 .check_quest_p3 span {
   display: inline-block;
-  padding: 10px;
+  padding: 14px;
   width: 360px;
   background-color: #b2b2b2;
   border-radius: 40px;
   color: rgb(0, 0, 0);
+  margin-bottom: 8px;
 }
 
 .check_quest_p3 input[type="checkbox"]:checked + span {
@@ -1114,11 +1073,12 @@ section {
 
 .check_quest_p4 span {
   display: inline-block;
-  padding: 10px;
+  padding: 14px;
   width: 360px;
   background-color: #b2b2b2;
   border-radius: 40px;
   color: rgb(0, 0, 0);
+  margin-bottom: 8px;
 }
 
 .check_quest_p4 input[type="checkbox"]:checked + span {
@@ -1141,14 +1101,15 @@ section {
 
 .check_quest_p5 span {
   display: inline-block;
-  padding: 8px;
+  padding: 14px;
   width: 360px;
   background-color: #b2b2b2;
   border-radius: 40px;
   color: rgb(0, 0, 0);
+  margin-bottom: 8px;
 }
 
-.check_quest_p5 input[type="checkbox"]:checked + span {
+.check_quest_p5 input[type="checkbox"]:checked + label > span {
   background-color: #00A9B4;
   color: black;
 }
@@ -1207,7 +1168,28 @@ section {
   color: rgb(0, 0, 0);
 }
 
-.check_quest_S input[type="checkbox"]:checked + span {
+.option-1, .option-2,.option-3,.option-4,.option-5,.option-6,.option-7,.option-8 {
+  display: inline-block;
+  padding: 10px;
+  width: 360px;
+  background-color: #b2b2b2;
+  border-radius: 40px;
+  color: rgb(0, 0, 0);
+  margin-bottom:  6px;
+}
+
+.option2-1, .option2-2,.option2-3,.option2-4,.option2-5,.option2-6,.option2-7,.option2-8 {
+  display: inline-block;
+  padding: 10px;
+  width: 360px;
+  background-color: #b2b2b2;
+  border-radius: 40px;
+  color: rgb(0, 0, 0);
+  margin-bottom:  6px;
+}
+
+
+.check_quest_S input[type="checkbox"]:checked + label > span {
   background-color: #00A9B4;
   color: black;
 }
@@ -1227,11 +1209,12 @@ section {
 
 .check_quest_S2 span {
   display: inline-block;
-  padding: 10px;
+  padding: 14px;
   width: 360px;
   background-color: #b2b2b2;
   border-radius: 40px;
   color: rgb(0, 0, 0);
+  margin-bottom: 8px;
 }
 
 .check_quest_S2 input[type="checkbox"]:checked + span {
@@ -1255,11 +1238,12 @@ section {
 
 .check_quest_S3 span {
   display: inline-block;
-  padding: 10px;
+  padding: 14px;
   width: 360px;
   background-color: #b2b2b2;
   border-radius: 40px;
   color: rgb(0, 0, 0);
+  margin-bottom: 8px;
 }
 
 .check_quest_S3 input[type="checkbox"]:checked + span {
@@ -1283,11 +1267,12 @@ section {
 
 .check_quest_S4 span {
   display: inline-block;
-  padding: 10px;
+  padding: 14px;
   width: 360px;
   background-color: #b2b2b2;
   border-radius: 40px;
   color: rgb(0, 0, 0);
+  margin-bottom: 6px;
 }
 
 .check_quest_S4 input[type="checkbox"]:checked + span {
@@ -1316,9 +1301,10 @@ section {
   background-color: #b2b2b2;
   border-radius: 40px;
   color: rgb(0, 0, 0);
+  margin-bottom: 6px;
 }
 
-.check_quest_S5 input[type="checkbox"]:checked + span {
+.check_quest_S5 input[type="checkbox"]:checked  + label > span {
   background-color: #00A9B4;
   color: black;
 }
@@ -1328,7 +1314,6 @@ section {
 }
 
 html, body {
-  background-color: black;
   margin: 0;
   padding: 0;
 }
@@ -1741,9 +1726,182 @@ button {
     transition: 0.7s;
   }
 
-  /*@media only screen and (max-width: 375px) {
-    .gender, .age, .status, .degree, .fos {
+/*ModelPage*/
+.ModelBody {
+  text-align: center;
+  background-image: linear-gradient(to bottom left, #1A2144 0%, #082949 10%,#193D5E 28%,#305D86 50%,#5387B7 75%,#5990C3 88%,#5F9AD0 100%);
+}
+
+.wrapper {
+  width: auto;
+  height: 400px;
+}
+
+model-viewer {
+  height: 100%;
+  width: auto;
+}
+
+canvas {
+  background-color: transparent;
+}
+
+.container {
+    width: 375px;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    color: white;
+    
+}
+
+.backGroundChart {
+  width: 100%;
+  height: 400px;
+  background-color: white;
+  opacity: 1;
+  border-radius: 10px;
+}
+
+.chart-container {
+  text-align: center;
+}
+
+.chart-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  padding-top: 20px;
+  position: absolute;
+  margin-left: 120px;
+}
+
+.header {
+    padding: 20px;
+    text-align: right;
+}
+
+.header-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.header-subtitle {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.contentcom {
+    text-align: center;
+    padding: 0px;
+    padding-bottom: 0px;
+}
+
+.contentcom h1 {
+    font-size: 35px;
+    margin-bottom: 0px;
+    position: absolute;
+    padding-right: 5px;
+    top: 90px;
+}
+
+.contentai {
+  text-align: center;
+  padding: 20px;
+  padding-bottom: 0px;
+}
+
+.contentai h1 {
+  font-size: 35px;
+  margin-bottom: 0px;
+  position: absolute;
+  top: 110px;
+  padding-left: 65px;
+}
+
+.contentmulti {
+  text-align: center;
+  padding: 0px;
+  padding-bottom: 0px;
+}
+
+.contentmulti h1 {
+  font-size: 35px;
+  margin-bottom: 0px;
+  position: absolute;
+  top: 110px;
+  padding-left: 55px;
+}
+
+.contentelec {
+  text-align: center;
+  padding: 0px;
+  padding-bottom: 0px;
+}
+
+.contentelec h1 {
+  font-size: 45px;
+  margin-bottom: 0px;
+  position: absolute;
+  top: 110px;
+  padding-left: 80px;
+}
+
+.robot-image {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+
+.buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 20px 20px 20px;
+}
+
+.btn {
+    background-color: #2196F3;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.save-btn {
+    background-color: #5F9AD0;
+}
+
+.share-btn {
+    background-color: transparent;
+    border: 2px solid black;
+    color: black;
+
+}
+
+  @media only screen and (min-width: 374px) {
+    .gender, .age, .status, .degree{
       top: 30%;
+    }
+    .fos {
+      top: 40%;
+    }
+    .register_page {
+      background-position-x: 50%;
+      background-position-y: 20px;
+      background-size: 1200px;
+    }
+    .visitor_page {
+      background-position-x: 50%;
+      background-position-y: 20px;
+      background-size: 1200px;
+    }
+    .student_page {
+      background-position-x: 50%;
+      background-position-y: -5px;
+      background-size: 1200px;
     }
     .page3DSP_V, .page4DSP_V {
       top: 25%;
@@ -1801,3 +1959,20 @@ button {
   } 
 }
 
+@media only screen and (min-width: 1919px) {
+  .register_page {
+    background-position-x: 0;
+    background-position-y: 0;
+    background-size: 1920px;
+  }
+  .visitor_page {
+    background-position-x: 0;
+    background-position-y: 0;
+    background-size: 1920px;
+  }
+  .student_page {
+    background-position-x: 0;
+    background-position-y: 0;
+    background-size: 1920px;
+  }
+}

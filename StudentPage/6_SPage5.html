@@ -8,7 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="../js/script.js"></script>
 </head>
-<body>
+<body class="student_page">
     <section class="image">
         <div>
             <img src="../Img/Deep_sea.png" width="107px" height="21px">
@@ -23,19 +23,11 @@
         </div>
     </section>
     <section class="OptionSelect_S5" id="page5Options_S5">
-        <div class="check_quest_S5">
-            <p><label><input id="option1_S5" type="checkbox" name="question5_S" value="Computer Engineering"><span>Computer Engineering</span></label></p>
-            <p><label><input id="option2_S5" type="checkbox" name="question5_S" value="System Analysis & Developer"><span>System Analysis & Developer</span></label></p>
-            <p><label><input id="option3_S5" type="checkbox" name="question5_S" value="Sound Engineer"><span>Sound Engineer</span></label></p>
-            <p><label><input id="option4_S5" type="checkbox" name="question5_S" value="Computer Graphic"><span>Computer Graphic</span></label></p>
-            <p><label><input id="option5_S5" type="checkbox" name="question5_S" value="Project Engineer"><span>Project Engineer</span></label></p>
-            <p><label><input id="option6_S5" type="checkbox" name="question5_S" value="Electrical Design Engineer"><span>Electrical Design Engineer</span></label></p>
-            <p><label><input id="option7_S5" type="checkbox" name="question5_S" value="Data Analyst"><span>Data Analyst</span></label></p>
-            <p><label><input id="option8_S5" type="checkbox" name="question5_S" value="Artificial Intelligence Engineer"><span>Artificial Intelligence Engineer</span></label></p>
+        <div id="checkbox-containerS5" class="check_quest_S5">
         </div>
     </section>
     <section class="next-button-pageDSP">
-        <button onclick="saveSelectionPage_S5()">
+        <button id="submitButton" onclick="saveSelectionPage_S5()">
             <span class="span-mother">
               <span>N</span>
               <span>e</span>
@@ -60,6 +52,113 @@
             <span>O</span>
             <span>k</span>
        </section>
+    </button>
 
 </body>
+<script>
+    $(document).ready(function() {
+   $.ajax({
+       url: apiUrl + '/qa_answers',  // Your server-side script URL
+       type: 'GET',
+       dataType: 'json',
+       success: function(data) {
+           var container = $('#checkbox-containerS5');
+           container.empty(); // Clear existing checkboxes
+
+           // Filter data to include only records with IDs 1 through 8
+           var filteredData = data.filter(function(item) {
+               return item.ans_id >= 21 && item.ans_id <= 28;
+           });
+
+           // Create checkboxes based on filtered data
+           $.each(filteredData, function(index, item) {
+               // Assign a unique class based on ans_id
+               var uniqueClass = 'option-' + item.ans_id; // Example: option-1, option-2, etc.
+               var checkbox = $('<input>', {
+                   type: 'checkbox',
+                   id: 'checkbox' + item.ans_id,
+                   value: item.ans_id + '-' + item.qa_id,
+                   class: uniqueClass
+               });
+
+               var span = $('<span>', {
+                   text: item.answer,
+                   class: uniqueClass
+               });
+
+               var label = $('<label>', {
+                   for: 'checkbox' + item.ans_id
+               }).append(checkbox).append(span); // Wrap checkbox and span inside label
+               
+                   container.append(checkbox).append(label).append('<br>');
+               });
+               
+               $('input[type="checkbox"]').change(function() {
+               var selectedCount = $('input[type="checkbox"]:checked').length;
+               if (selectedCount > 3) {
+                   $(this).prop('checked', false); // Uncheck the last clicked checkbox
+                   alert('You can select up to 3 options only.');
+               }
+           });
+       },
+           error: function(xhr, status, error) {
+               console.error('Error fetching data:', status, error);
+           }
+       });
+    $('#submitButton').click(function() {
+        // Retrieve and combine stored data from localStorage
+        var pages = ['selectedOptions_S1', 'selectedOptions_S2', 'selectedOptions_S3', 'selectedOptions_S4', 'selectedOptions_S5'];
+        var combinedAnswers = {};
+
+        pages.forEach(function(page) {
+            var answers = JSON.parse(localStorage.getItem(page)) || [];
+            answers.forEach(function(answer) {
+                var [ans_id, qa_id] = answer.split('-'); // Split '1-1' into qa_id and ans_id
+                qa_id = parseInt(qa_id, 10);
+                ans_id = parseInt(ans_id, 10);
+
+                if (!combinedAnswers[qa_id]) {
+                    combinedAnswers[qa_id] = [];
+                }
+                combinedAnswers[qa_id].push(ans_id);
+            });
+        });
+
+        // Format data into the required structure
+        var anslist = Object.keys(combinedAnswers).map(function(qa_id) {
+            return {
+                qa_id: parseInt(qa_id, 10),
+                ans_id: combinedAnswers[qa_id]
+            };
+        });
+
+        var formatJson = {
+            user_id: localStorage.getItem("user_id"), // Replace with actual user ID if needed
+            ans_list: anslist
+        };
+
+        console.log("user_id:", localStorage.getItem("user_id"));
+        console.log(JSON.stringify(formatJson));
+
+        // Send data to server
+        $.ajax({
+            url: apiUrl + 'qa_transaction', // Your server-side script URL
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(formatJson),
+            success: function(response) {
+                console.log('Success:', response);
+                alert('Data submitted successfully.');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', status, error);
+                alert('Error submitting data.');
+            }
+        });
+        location.replace("../ModelPage/1_ModelPageStart.html")
+    });
+});
+
+</script>
 </html>
