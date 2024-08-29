@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Sea</title>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
+</head>
+<body class="register_page">
+    <section class="image">
+        <div>
+            <img src="../Img/Deep_sea.png" width="107px" height="21px">
+        </div>
+    </section>
+    <section class="fos">
+        <div class="content">
+            <h1>เเผนการเรียน/สาขา</h1>
+            <span>Field Of Study</span>
+        </div>
+    </section>
+    <section class="inputBox">
+      <input type="text" id="txtFos" placeholder="Please Enter Your Field Of Study">
+    </section>
+    <section class="next-button">
+        <button onclick="setFos()">
+            <span class="span-mother">
+              <span>N</span>
+              <span>e</span>
+              <span>x</span>
+              <span>t</span>
+            </span>
+            <span class="span-mother2">
+               <span>O</span>
+               <span>k</span>
+            </span>
+          </button>
+    </section>
+    <section class="back-button">
+      <button class="back" onclick="goBackFos()">
+        <span class="span-mother">
+          <span>B</span>
+          <span>a</span>
+          <span>c</span>
+          <span>k</span>
+        </span>
+        <span class="span-mother2">
+            <span>O</span>
+            <span>k</span>
+       </section>
+       <script>
+        $(document).ready(function() {
+    let fos = localStorage.getItem('fos')
+    if(fos)
+    $("#txtFos").val(fos)
+    });
+        </script>
+</body>
+</html>

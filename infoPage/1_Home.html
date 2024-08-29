@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Sea</title>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
+</head>
+<body>
+    <section class="image">
+        <div> 
+            <img src="../Img/Deep_sea.png" width="107px" height="21px">
+        </div>
+    </section>
+    <section class="home">
+        <div class="content">
+            <h1>ใส่อีเมลของคุณ</h1>
+            <span>Email</span>
+        </div>
+    </section>
+    <section class="inputBox">
+        <div>
+            <input type="email" id="txtEmail" placeholder="Please Enter Your E-Mail">
+            <p id="result"></p>
+
+        </div>
+    </section>
+    <section class="next-button-home">
+        <button onclick="setEmail()">
+            <span class="span-mother">
+              <span>N</span>
+              <span>e</span>
+              <span>x</span>
+              <span>t</span>
+            </span>
+            <span class="span-mother2">
+                <span>O</span>
+                <span>k</span>
+            </span>
+          </button>
+    </section>
+    <script>
+    $(document).ready(function() {
+
+    let email = localStorage.getItem('email')
+
+    if(email)
+    $("#txtEmail").val(email)
+    });
+
+    </script>
+</body>
+</html>

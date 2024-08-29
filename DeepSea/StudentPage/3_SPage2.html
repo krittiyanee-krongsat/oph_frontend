@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Sea</title>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
+</head>
+<body class="student_page">
+    <section class="image">
+        <div>
+            <img src="../Img/Deep_sea.png" width="107px" height="21px">
+        </div>
+    </section>
+    <section class="page2DSP_V">
+        <div class="content">
+            <h1>คุณมีความสนใจในหัวข้อใดมากที่สุด?</h1>
+            <span>What topic are you most interested in?</span>
+        </div>
+    </section>
+    <section class="OptionSelect_S2" id="page2Options_S2">
+        <div id="checkbox-containerS2" class="check_quest_S2">
+        </div>
+    </section>
+    <section class="next-button-pageDSP">
+        <button onclick="saveSelectionPage_S2()">
+            <span class="span-mother">
+              <span>N</span>
+              <span>e</span>
+              <span>x</span>
+              <span>t</span>
+            </span>
+            <span class="span-mother2">
+                <span>O</span>
+                <span>k</span>
+            </span>
+          </button>
+    </section>
+    <section class="back-button-pageDSP">
+      <button class="back" onclick="goBackPageDSP_S2()">
+        <span class="span-mother">
+          <span>B</span>
+          <span>a</span>
+          <span>c</span>
+          <span>k</span>
+        </span>
+        <span class="span-mother2">
+            <span>O</span>
+            <span>k</span>
+       </section>
+</body>
+<script>
+    $(document).ready(function() {
+    $.ajax({
+        url: apiUrl + 'qa_answers',  // Your server-side script URL
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            var container = $('#checkbox-containerS2');
+            container.empty(); // Clear existing checkboxes
+
+            // Filter data to include only records with IDs 1 through 8
+            var filteredData = data.filter(function(item) {
+                return item.ans_id >= 9 && item.ans_id <= 12;
+            });
+
+            // Create checkboxes based on filtered data
+            $.each(filteredData, function(index, item) {
+                // Assign a unique class based on ans_id
+                var uniqueClass = 'option2-' + item.ans_id;
+                var checkbox = $('<input>', {
+                    type: 'checkbox',
+                    id: 'checkbox' + item.ans_id,
+                    value: item.ans_id + '-' + item.qa_id,
+                    class: uniqueClass
+                });
+
+                var span = $('<span>', {
+                    text: item.answer,
+                    class: uniqueClass
+                });
+
+                var label = $('<label>', {
+                    for: 'checkbox' + item.ans_id
+                }).append(checkbox).append(span); // Wrap checkbox and span inside label
+
+                container.append(label).append('<br>');
+            });
+
+            // Allow only one checkbox to be selected at a time
+            $('#checkbox-containerS2').on('change', 'input[type="checkbox"]', function() {
+                if ($(this).is(':checked')) {
+                    $('#checkbox-containerS2 input[type="checkbox"]').not(this).prop('checked', false); // Uncheck other checkboxes
+                }
+            });
+
+            $('#submit').click(function() {
+                var selectedIds = [];
+                $('#checkbox-containerS2 input[type=checkbox]:checked').each(function() {
+                    selectedIds.push($(this).val()); // Collect selected checkbox values
+                });
+
+                // Check if exactly one option is selected
+                if (selectedIds.length === 1) {
+                    console.log('Selected checkbox ID:', selectedIds[0]);
+                    // Store selected ID in localStorage or perform other actions
+                } else {
+                    alert('Please select exactly 1 option.');
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', status, error);
+        }
+    });
+});
+
+</script>
+</html>

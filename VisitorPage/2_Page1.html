@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Sea</title>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
+</head>
+<body>
+    <section class="image">
+        <div>
+            <img src="../Img/Deep_sea.png" width="107px" height="21px">
+        </div>
+    </section>
+    <section class="page1DSP_V">
+        <div class="content">
+            <h1>ถ้าคุณสามารถเลือกให้บุตรหลานหรือผู้ที่อยู่ภาย ใต้การปกครองของคุณเรียนวิชาใดก็ได้
+                คุณจะให้เขาเลือกเรียนวิชาอะไร?
+                (เลือกตอบ 3 ลำดับ)</h1>
+            <span>If you could choose for your child or someone under your guardianship to study any subjects, what would you have them choose? 
+                (Choose up to 3 preferences.)</span>
+        </div>
+    </section>
+    <section class="OptionSelect" id="page1Options">
+        <div class="check_quest">
+            <p><label><input id="option1" type="checkbox" name="question1" value="Programming & Coding"><span> Programming & Coding</span></label></p>
+            <p><label><input id="option2" type="checkbox" name="question1" value="Robotics & Automation"><span> Robotics & Automation</span></label></p>
+            <p><label><input id="option3" type="checkbox" name="question1" value="Sound Engineering"><span> Sound Engineering</span></label></p>
+            <p><label><input id="option4" type="checkbox" name="question1" value="Visual & Motion Graphic"><span> Visual & Motion Graphic</span></label></p>
+            <p><label><input id="option5" type="checkbox" name="question1" value="Renewable Energy"><span> Renewable Energy</span></label></p>
+            <p><label><input id="option6" type="checkbox" name="question1" value="Electrical"><span> Electrical</span></label></p>
+            <p><label><input id="option7" type="checkbox" name="question1" value="AI"><span> AI</span></label></p>
+            <p><label><input id="option8" type="checkbox" name="question1" value="Data Science"><span> Data Science</span></label></p>
+        </div>
+    </section>
+    <section class="next-button-pageDSP">
+        <button onclick="saveSelections()">
+            <span class="span-mother">
+              <span>N</span>
+              <span>e</span>
+              <span>x</span>
+              <span>t</span>
+            </span>
+            <span class="span-mother2">
+                <span>O</span>
+                <span>k</span>
+            </span>
+          </button>
+    </section>
+    <section class="back-button-pageDSP">
+      <button class="back" onclick="goBackPageDSP1()">
+        <span class="span-mother">
+          <span>B</span>
+          <span>a</span>
+          <span>c</span>
+          <span>k</span>
+        </span>
+        <span class="span-mother2">
+            <span>O</span>
+            <span>k</span>
+       </section>
+</body>
+</html>

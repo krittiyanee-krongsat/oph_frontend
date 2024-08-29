@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Sea</title>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
+</head>
+<body class="visitor_page">
+    <section class="image">
+        <div>
+            <img src="../Img/Deep_sea.png" width="107px" height="21px">
+        </div>
+    </section>
+    <section class="page1DSP_V">
+        <div class="content">
+            <h1>ถ้าคุณสามารถเลือกให้บุตรหลานหรือผู้ที่อยู่ภาย ใต้การปกครองของคุณเรียนวิชาใดก็ได้
+                คุณจะให้เขาเลือกเรียนวิชาอะไร?
+                (เลือกตอบ 3 ลำดับ)</h1>
+            <span>If you could choose for your child or someone under your guardianship to study any subjects, what would you have them choose? 
+                (Choose up to 3 preferences.)</span>
+        </div>
+    </section>
+    <section class="OptionSelect" id="page1Options">
+        <div id="checkbox-containerV1" class="check_quest">
+        </div>
+    </section>
+    <section class="next-button-pageDSP">
+        <button onclick="saveSelections()">
+            <span class="span-mother">
+              <span>N</span>
+              <span>e</span>
+              <span>x</span>
+              <span>t</span>
+            </span>
+            <span class="span-mother2">
+                <span>O</span>
+                <span>k</span>
+            </span>
+          </button>
+    </section>
+    <section class="back-button-pageDSP">
+      <button class="back" onclick="goBackPageDSP1()">
+        <span class="span-mother">
+          <span>B</span>
+          <span>a</span>
+          <span>c</span>
+          <span>k</span>
+        </span>
+        <span class="span-mother2">
+            <span>O</span>
+            <span>k</span>
+       </section>
+</body>
+<script>
+    $(document).ready(function() {
+   $.ajax({
+    url: apiUrl + 'qa_answers',  // Your server-side script URL
+       type: 'GET',
+       dataType: 'json',
+       success: function(data) {
+           var container = $('#checkbox-containerV1');
+           container.empty(); // Clear existing checkboxes
+
+           // Filter data to include only records with IDs 1 through 8
+           var filteredData = data.filter(function(item) {
+               return item.ans_id >= 1 && item.ans_id <= 8;
+           });
+
+           // Create checkboxes based on filtered data
+           $.each(filteredData, function(index, item) {
+               // Assign a unique class based on ans_id
+               var uniqueClass = 'option-' + item.ans_id; // Example: option-1, option-2, etc.
+               var checkbox = $('<input>', {
+                   type: 'checkbox',
+                   id: 'checkbox' + item.ans_id,
+                   value: item.ans_id + '-' + item.qa_id,
+                   class: uniqueClass
+               });
+
+               var span = $('<span>', {
+                   text: item.answer,
+                   class: uniqueClass
+               });
+
+               var label = $('<label>', {
+                   for: 'checkbox' + item.ans_id
+               }).append(checkbox).append(span); // Wrap checkbox and span inside label
+               
+                   container.append(checkbox).append(label).append('<br>');
+               });
+               
+               $('input[type="checkbox"]').change(function() {
+               var selectedCount = $('input[type="checkbox"]:checked').length;
+               if (selectedCount > 3) {
+                   $(this).prop('checked', false); // Uncheck the last clicked checkbox
+                   alert('You can select up to 3 options only.');
+               }
+           });
+       },
+           error: function(xhr, status, error) {
+               console.error('Error fetching data:', status, error);
+           }
+       });
+       $('#submit').click(function() {
+           var selectedIds = [];
+           $('#checkbox-containerV1 input[type=checkbox]:checked').each(function() {
+               selectedIds.push($(this).val()); // Collect selected checkbox values
+           });
+
+           // Check if exactly 3 options are selected
+           if (selectedIds.length === 3) {
+               console.log('Selected checkbox IDs:', selectedIds);
+               // Store selected IDs in localStorage or perform other actions
+               location.replace('../VisitorPage/2_Page1.html')
+           } else {
+               alert('Please select exactly 3 options.');
+           }
+       });
+   });
+</script>
+</html>

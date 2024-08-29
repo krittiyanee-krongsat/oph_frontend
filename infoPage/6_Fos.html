@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Sea</title>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
+</head>
+<body>
+    <section class="image">
+        <div>
+            <img src="../Img/Deep_sea.png" width="107px" height="21px">
+        </div>
+    </section>
+    <section class="fos">
+        <div class="content">
+            <h1>เเผนการเรียน/สาขา</h1>
+            <span>Field Of Study</span>
+        </div>
+    </section>
+    <section class="inputSelect">
+        <div class="radio-input-fos">
+            <label class="label">
+              <input type="radio" id="value-1" checked="" name="value-fos" value="English - Social Studies" />
+              <p class="text">ไทย-สังคม / English - Social Studies</p>
+            </label>
+            <label class="label">
+              <input type="radio" id="value-2" name="value-fos" value="Arts - Languages" />
+              <p class="text">ศิลป์-ภาษา / Arts - Languages</p>
+            </label>
+            <label class="label">
+              <input type="radio" id="value-3" name="value-fos" value="Science - Mathematics" />
+              <p class="text">วิทย์-คณิต / Science - Mathematics</p>
+            </label>
+            <label class="label">
+              <input type="radio" id="value-4" name="value-fos" value="English - Mathematics" />
+              <p class="text">ศิลป์-คำนวน / English - Mathematics</p>
+            </label>
+            <label class="label">
+              <input type="radio" id="value-5" name="value-fos" value="Other" />
+              <p class="text">อื่นๆ / Other</p>
+            </label>
+          </div>
+          
+    </section>
+    <section class="next-button">
+        <button onclick="setFos()">
+            <span class="span-mother">
+              <span>N</span>
+              <span>e</span>
+              <span>x</span>
+              <span>t</span>
+            </span>
+            <span class="span-mother2">
+               <span>O</span>
+               <span>k</span>
+            </span>
+          </button>
+    </section>
+    <section class="back-button">
+      <button class="back" onclick="goBackFos()">
+        <span class="span-mother">
+          <span>B</span>
+          <span>a</span>
+          <span>c</span>
+          <span>k</span>
+        </span>
+        <span class="span-mother2">
+            <span>O</span>
+            <span>k</span>
+       </section>
+       <script>
+        $(document).ready(function() {
+          let fos = localStorage.getItem('fos');
+          console.log("Retrieved fos from localStorage: ", fos);
+          if (fos) {
+            $(`input[name="value-fos"][value="${fos}"]`).prop('checked', true);
+            console.log(`Setting radio button with value: ${fos} as checked`);
+          }
+        });
+        </script>
+</body>
+</html>

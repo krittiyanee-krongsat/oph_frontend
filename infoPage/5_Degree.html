@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Sea</title>
+    <link rel="stylesheet" href="../css/styles.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/script.js"></script>
+</head>
+<body>
+    <section class="image">
+        <div>
+            <img src="../Img/Deep_sea.png" width="107px" height="21px">
+        </div>
+    </section>
+    <section class="degree">
+        <div class="content">
+            <h1>เลือกระดับการศึกษา</h1>
+            <span>Degree</span>
+        </div>
+    </section>
+    <section class="inputSelect">
+        <div class="radio-input-degree">
+            <label class="label">
+              <input type="radio" id="value-1" checked="" name="value-degree" value="Junior" />
+              <p class="text">มัธยมศึกษาตอนต้น/ Junior High School</p>
+            </label>
+            <label class="label">
+              <input type="radio" id="value-2" name="value-degree" value="Senior" />
+              <p class="text">มัธยมศึกษาตอนปลาย/ Senior High School</p>
+            </label>
+            <label class="label">
+              <input type="radio" id="Voc" name="value-degree" value="Voc, High Voc" />
+              <p class="text">ปวช, ปวส/ Voc. Cert., High Voc. Cert.</p>
+            </label>
+          </div>
+          
+    </section>
+    <section class="next-button">
+        <button onclick="setDegree()">
+            <span class="span-mother">
+              <span>N</span>
+              <span>e</span>
+              <span>x</span>
+              <span>t</span>
+            </span>
+            <span class="span-mother2">
+               <span>O</span>
+               <span>k</span>
+            </span>
+          </button>
+    </section>
+    <section class="back-button">
+      <button class="back" onclick="goBackDegree()">
+        <span class="span-mother">
+          <span>B</span>
+          <span>a</span>
+          <span>c</span>
+          <span>k</span>
+        </span>
+        <span class="span-mother2">
+            <span>O</span>
+            <span>k</span>
+       </section>
+       <script>
+        $(document).ready(function() {
+          let degree = localStorage.getItem('degree');
+          console.log("Retrieved degree from localStorage: ", degree);
+          if (degree) {
+            $(`input[name="value-degree"][value="${degree}"]`).prop('checked', true);
+            console.log(`Setting radio button with value: ${degree} as checked`);
+          }
+        });
+        </script>
+</body>
+</html>
