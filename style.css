@@ -9,7 +9,7 @@
 }
 
 /* แก้ไขการจัดกลางปุ่ม */
-.button_1, .button_2 {
+.button_1, .button_2, .button_3 {
     font-size: 15px;
     background: linear-gradient(90deg, #1C4A43 30%, #3A6574 55%, #2B5468 120%);
     color: #FFFFFF;
@@ -32,8 +32,12 @@
     background: linear-gradient(90deg, #028391 20%, #134B70 45%, #1E2A5E 120%);
 }
 
+.button_3:hover {
+    background: linear-gradient(90deg, #028391 20%, #134B70 45%, #1E2A5E 120%);
+}
+
 /* กำหนดตำแหน่งของข้อความและปุ่ม */
-.header, .text_1, .text_2 {
+.header, .text_1, .text_2, .text_3 {
     color: #FFFFFF;
     margin: 10px; 
 }
