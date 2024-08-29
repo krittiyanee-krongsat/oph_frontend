@@ -16,14 +16,23 @@ body {
 
 .register_page {
   background-image: url(../Img/register_bg.jpg);
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .student_page {
   background-image: url(../Img/student_bg.jpg);
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .visitor_page {
   background-image: url(../Img/visitor_bg.jpg);
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 section {
@@ -1765,6 +1774,7 @@ canvas {
 
 .chart-container {
   text-align: center;
+  align-items: center;
 }
 
 .chart-title {
@@ -1807,7 +1817,7 @@ canvas {
 
 .contentai {
   text-align: center;
-  padding: 20px;
+  padding: 10px;
   padding-bottom: 0px;
 }
 
@@ -1958,6 +1968,80 @@ canvas {
     top: 52%;
   } 
 }
+
+@media only screen and (min-width: 389px) {
+  .container {
+    width: 390px;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    color: white;
+}
+
+.contentai h1 {
+  padding-left: 80px;
+}
+
+.chart-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  padding-top: 20px;
+  position: absolute;
+  margin-left: 125px;
+}
+
+}
+
+@media only screen and (min-width: 413px) {
+  .container {
+    width: 414px;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    color: white;
+}
+
+.contentai h1 {
+  padding-left: 90px;
+}
+
+.chart-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  padding-top: 20px;
+  position: absolute;
+  margin-left: 135px;
+}
+
+}
+
+@media only screen and (min-width: 429px) {
+  .container {
+    width: 430px;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    color: white;
+}
+
+.contentai h1 {
+  padding-left: 95px;
+}
+
+.chart-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  padding-top: 20px;
+  position: absolute;
+  margin-left: 145px;
+}
+
+}
+
+
 
 @media only screen and (min-width: 1919px) {
   .register_page {

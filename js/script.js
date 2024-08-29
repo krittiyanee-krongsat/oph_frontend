@@ -432,7 +432,6 @@ const DeepSeaNextStudent = () => {
   localStorage.setItem('user_id',response.user_id);
   console.log(response.user_id);
   location.replace('../StudentPage/2_SPage1.html')
-  alert('success');
 })
 }
 
@@ -471,7 +470,6 @@ const DeepSeaNext = () => {
   localStorage.setItem('user_id',response.user_id);
   console.log(response.user_id);
   location.replace("../VisitorPage/2_Page1.html")
-  alert('success');
 })
 }
 
