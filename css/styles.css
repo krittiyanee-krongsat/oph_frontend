@@ -1971,7 +1971,7 @@ canvas {
 
 @media only screen and (min-width: 389px) {
   .container {
-    width: 390px;
+    width: 395px;
     height: 100%;
     border-radius: 20px;
     overflow: hidden;
@@ -1995,7 +1995,7 @@ canvas {
 
 @media only screen and (min-width: 413px) {
   .container {
-    width: 414px;
+    width: 420px;
     height: 100%;
     border-radius: 20px;
     overflow: hidden;
@@ -2019,7 +2019,7 @@ canvas {
 
 @media only screen and (min-width: 429px) {
   .container {
-    width: 430px;
+    width: 435px;
     height: 100%;
     border-radius: 20px;
     overflow: hidden;
