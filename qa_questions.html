@@ -3,240 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Account</title>
+    <title>QA</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
-    <h1>Register Account</h1>
-    <script>
+    <script> 
 
         //var apiUrl = "http://localhost:5000/";
         var apiUrl = "https://deepseaoph2024.bu.ac.th/api/";
 
-        
-        /*var json;
-        
-        async function getData(){
-            const url="http://localhost:8000/register_age";
-            try{
-                const response = await fetch(url);
-                if(!response.ok){
-                    throw new Error (`Response status: ${response.status}`);
-                }
-                json = await response.json();
-                console.log(json);
-                return json;
-
-            } catch (error) {
-                console.error(error.message);
-            }
-        }
-        console.log("Hello");
-        getData();
-        const res = JSON.parse(json);
-        
-        console.log(res);
-        for(const key in res){
-            if(res.hasOwnProperty(key)){
-                console.log(`${key}:${res[key]}`)
-            }
-        }*/
-
     </script>
+        <body>
 
-    <input type="text" id="emailUser" placeholder="Enter email"><br/><br/>
+            <div id="questions"></div><br/><br/>
+            <button id="submitButton">Submit</button>
 
-    <select id="ageDropdown">
-        <option value="">Select Age</option>
-    </select><br/><br/>
+            <script>
 
-    <select id="genderDropdown">
-        <option value="">Select Gender</option>
-    </select><br/><br/>
-    
-    <select id="statusDropdown">
-        <option value="">Select Status</option>
-    </select><br/><br/>
-    
-    <select id="degreeDropdown">
-        <option value="">Select Level</option>
-    </select><br/><br/>
+                $(document).ready(function() {
 
-    <input type="text" id="field_study_input" placeholder="Enter field of study"><br/><br/>
+                    var questionsData = [];
 
-    <select id="province_Dropdown">
-        <option value="">Select province</option>
-    </select><br/><br/>
-
-    <button id="submitButton">Submit</button>
-
-    <script>
-        $(document).ready(function() {
-
-            // ดึงข้อมูลจาก email
-            /*$.ajax({
-                url: apiUrl+"register_email",
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var $dropdown = $('#emailUser');
-                    $.each(data, function(index, item) {
-                        $dropdown.append(
-                            $('<option></option>').val(item.email_id).text(item.email_id)
-                        );
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                }
-            });*/
-
-            // ดึงข้อมูลจาก register_age
-            $.ajax({
-                url: apiUrl+"register_age",
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var $dropdown = $('#ageDropdown');
-                    $.each(data, function(index, item) {
-                        $dropdown.append(
-                            $('<option></option>').val(item.age_id).text(item.age_name)
-                        );
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                }
-            });
-
-            // ดึงข้อมูลจาก register_gender
-            $.ajax({
-                url: apiUrl+"register_gender",
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var $dropdown = $('#genderDropdown');
-                    $.each(data, function(index, item) {
-                        $dropdown.append(
-                            $('<option></option>').val(item.gender_id).text(item.gender_name)
-                        );
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                }
-            });
-            
-            // ดึงข้อมูลจาก register_status
-            $.ajax({
-                url: apiUrl+"register_status",
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var $dropdown = $('#statusDropdown');
-                    $.each(data, function(index, item) {
-                        $dropdown.append(
-                            $('<option></option>').val(item.status_id).text(item.status_name)
-                        );
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                }
-            });
-            
-            // ดึงข้อมูลจาก register_degree
-            $.ajax({
-                url: apiUrl+"register_degree",
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var $dropdown = $('#degreeDropdown');
-                    $.each(data, function(index, item) {
-                        $dropdown.append(
-                            $('<option></option>').val(item.degree_id).text(item.degree_name)
-                        );
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                }
-            });
-            
-            // ดึงข้อมูลจาก register_field_study
-            /*$.ajax({
-                url: apiUrl+"register_field_study",
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var $dropdown = $('#field_study_Dropdown');
-                    $.each(data, function(index, item) {
-                        $dropdown.append(
-                            $('<option></option>').val(item.field_study_id).text(item.field_study_name)
-                        );
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                }
-            });*/
-            
-            // ดึงข้อมูลจาก register_province
-            $.ajax({
-                url: apiUrl+"register_province",
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    var $dropdown = $('#province_Dropdown');
-                    $.each(data, function(index, item) {
-                        $dropdown.append(
-                            $('<option></option>').val(item.province_id).text(item.province_name)
-                        );
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", status, error);
-                }
-            });
-            
-            // ฟังการคลิกปุ่ม Submit
-            $('#submitButton').click(function() {
-                // ดึงข้อมูลจาก form หรือ dropdown
-                var email_name = $('#emailUser').val().trim();
-                var age_id = $('#ageDropdown').val();
-                var gender_id = $('#genderDropdown').val();
-                var status_id = $('#statusDropdown').val(); 
-                var degree_id =  $('#degreeDropdown').val(); 
-                var field_study_name = $('#field_study_input').val().trim();
-                var province_id = $('#province_Dropdown').val();
-                //var result_id = $('#resultUser').val();
-                //var registered_date = new Date().toISOString();
-                console.log(email_name);
-                console.log(field_study_name);
-
-                    $.ajax({
-                    url: apiUrl+'register_user',
-                    method: 'POST',
-                    dataType: 'json', //datatype ที่ส่งมาเป็นรูปแบบ json
-                    data: {
-                        email_name:email_name,
-                        age_id: age_id,
-                        gender_id:gender_id,
-                        status_id: status_id,
-                        degree_id: degree_id,
-                        field_study_name: field_study_name,
-                        province_id: province_id,
-                        //result_id:result_id,
+                    // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
+                    for(let id=1; id <= 5; id++){
+                        $.ajax({
+                            url: apiUrl+"qa_question/"+id,
+                            method: 'GET',
+                            dataType: 'json',
+                            success: function(data) {
+                                questionsData.push(data);
+                                if (questionsData.length === 5) {
+                                    displayQuestions();
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("AJAX Error: ", status, error);
+                            }
+                        });
                     }
-                }).always(function (response) {
-                    console.log(response);
-                    alert('success');
-                })
-                return false;
+                
+                    function displayQuestions() {
+                        var $questions = $("<div></div>");
+                
+                        $.each(questionsData, function(index, questionData) {
+                            var question_list = questionData.question_list;
+                            var answers = questionData.answers_list[0];
+                
+                            $.each(question_list, function(index, questionItem) {
+                                var $questionContainer = $('<div></div>');
+                                
+                                // แสดงข้อความคำถาม
+                                $questionContainer.append(
+                                    $('<span></span>').val(questionItem.qa_id).text(questionItem.q_student)
+                                );
+                
+                                // กำหนดประเภทของการป้อนข้อมูลเป็น checkbox หรือ radio
+                                var inputType = (questionItem.qa_id === 1 || questionItem.qa_id === 5) ? 'checkbox' : 'radio';
+                                
+                                $.each(answers, function(index, answerItem) {
+                                    var $label = $('<label></label>');
+                                    var $input = $('<input type="' + inputType + '" name="answer' + questionItem.qa_id + '">').val(answerItem.ans_id);
+                
+                                    $label.append($input).append(answerItem.answer);
+                                    $questionContainer.append('<br>').append($label);
+                                });
+                
+                                $questions.append($questionContainer).append('<br>');
+                            });
+                        });
+                
+                        $('#questions').html($questions);
+                        enableSubmitButton(); // เรียกฟังก์ชันเพื่อกำหนดสถานะเริ่มต้นของปุ่มส่ง
+                    }
+
+                    function enableSubmitButton() {
+                        $('#submitButton').prop('disabled', false);
+                        validateAnswers(); // ตรวจสอบความถูกต้องของคำตอบเบื้องต้น
+                    }
+
+                    function validateAnswers() {
+                        var valid = true;
+
+                        // ตรวจสอบความถูกต้องของคำตอบสำหรับคำถามประเภท checkbox
+                        $('input[type="checkbox"]').each(function() {
+                            var questionId = $(this).attr('name').replace('answer', '');
+                            var selectedCount = $('input[name="answer' + questionId + '"]:checked').length;
+                            
+                            // ถ้าคำถามเป็นประเภท 1 หรือ 5 ต้องเลือกไม่เกิน 3 ตัวเลือก
+                            if ((questionId === '1' || questionId === '5') && selectedCount > 3) {
+                                valid = false;
+                                return false; // ออกจากลูป
+                            }
+                        });
+
+                        $('#submitButton').prop('disabled', !valid);
+                    }
+
+                    // ฟังก์ชันสำหรับเปลี่ยนแปลงค่าใน checkbox หรือ radio button
+                    $('#questions').on('change', 'input[type="checkbox"], input[type="radio"]', function() {
+                        validateAnswers();
+                    });
+
+                    $('#submitButton').click(function() {
+                        var qa_array = [];
+                        
+                        // สร้างอาร์เรย์สำหรับเก็บคำตอบ
+                        $('#questions span').each(function() {
+                            var questionId = $(this).val();
+                            var selectedAnswers = [];
+                            
+                            $('#questions input[name="answer' + questionId + '"]:checked').each(function() {
+                                selectedAnswers.push($(this).val());
+                            });
+                            
+                            if (selectedAnswers.length > 0) {
+                                var qa_answers = {
+                                    'qa_id': questionId,
+                                    'ans_id': selectedAnswers
+                                };
+                                
+                                qa_array.push(qa_answers);
+                                console.log(qa_answers);
+                            }
+                        });
+                    
+                        var formatJson = {
+                            "user_id": localStorage.getItem("user_id"),
+                            "ans_list": qa_array
+                        };
+                        
+                        console.log("user_id:", localStorage.getItem("user_id"));
+                        console.log(JSON.stringify(formatJson));
+                        
+                        // ส่งข้อมูลคำตอบไปยังเซิร์ฟเวอร์
+                        $.ajax({
+                            url: apiUrl+'qa_transaction',
+                            method: 'POST',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify(formatJson)
+                        }).always(function (response) {
+                            console.log(response);
+                            localStorage.getItem("user_id");
+                            alert('Success');
+                        });
+                    
+                        return false;
+                    });            
                 });
-            });
-    </script>
-</body>
+                
+            </script>
+        </body>
 </html>
 
 
