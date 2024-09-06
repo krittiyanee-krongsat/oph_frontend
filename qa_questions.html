@@ -20,7 +20,7 @@
             var selectedAnswers = {}; // สำหรับเก็บคำตอบที่เลือก
 
             // ดึงข้อมูลคำถามและคำตอบจากเซิร์ฟเวอร์
-            for(let id = 1; id <= 5; id++){
+            for (let id = 1; id <= 5; id++) {
                 $.ajax({
                     url: apiUrl + "qa_question/" + id,
                     method: 'GET',
@@ -28,6 +28,10 @@
                     success: function(data) {
                         questionsData.push(data);
                         if (questionsData.length === 5) {
+                            // เรียงลำดับคำถามตาม qa_id
+                            questionsData.sort(function(a, b) {
+                                return a.question_list[0].qa_id - b.question_list[0].qa_id;
+                            });
                             displayQuestions();
                         }
                     },
@@ -42,19 +46,29 @@
         
                 $.each(questionsData, function(index, questionData) {
                     var questionList = questionData.question_list;
-                    var answers = questionData.answers_list[0];
-        
+                    var answers = questionData.answers_list[0]; // แสดงเฉพาะ answer_list ที่มี index 0
+
+                    // เรียงลำดับคำถามตาม qa_id (ลำดับคำถาม)
+                    questionList.sort(function(a, b) {
+                        return a.qa_id - b.qa_id;
+                    });
+
                     $.each(questionList, function(index, questionItem) {
                         var $questionContainer = $('<div></div>');
                         
                         // แสดงข้อความคำถาม
                         $questionContainer.append(
-                            $('<span></span>').attr('data-id', questionItem.qa_id).text(questionItem.q_student)
+                            $('<span></span>').attr('data-id', questionItem.qa_id).text((index + 1) + '. ' + questionItem.q_student)
                         );
-        
+
                         // กำหนดประเภทของการป้อนข้อมูลเป็น checkbox หรือ radio
                         var inputType = (questionItem.qa_id === 1 || questionItem.qa_id === 5) ? 'checkbox' : 'radio';
                         
+                        // เรียงลำดับคำตอบตาม ans_id
+                        answers.sort(function(a, b) {
+                            return a.ans_id - b.ans_id;
+                        });
+
                         $.each(answers, function(index, answerItem) {
                             var $label = $('<label></label>');
                             var $input = $('<input type="' + inputType + '" name="answer' + questionItem.qa_id + '">').val(answerItem.ans_id);
@@ -163,6 +177,7 @@
     </script>
 </body>
 </html>
+
 
 
 
